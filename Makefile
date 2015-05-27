@@ -17,9 +17,9 @@ tests: make_tests run_tests
 
 make_tests:
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -D USE_DOUBLE tests/test.cpp -o $(TARGET)_DOUBLE
-	$(CC) $(CFLAGS) -D USE_LDOUBLE tests/test.cpp -o $(TARGET)_LDOUBLE
-	$(CC) $(CFLAGS) -D USE_FLOAT tests/test.cpp -o $(TARGET)_FLOAT
+	$(CC) $(CFLAGS) -D USE_DOUBLE tests/test_lib_3d.cpp -o $(TARGET)_DOUBLE
+	$(CC) $(CFLAGS) -D USE_LDOUBLE tests/test_lib_3d.cpp -o $(TARGET)_LDOUBLE
+	$(CC) $(CFLAGS) -D USE_FLOAT tests/test_lib_3d.cpp -o $(TARGET)_FLOAT
 
 run_tests:
 	./$(TARGET)_DOUBLE
