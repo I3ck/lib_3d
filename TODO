@@ -1,1 +1,15 @@
-write an actual TODO
+Classes
+
+    Point (x, y, z)
+    Vector (x, y, z)
+
+    Matrix (4 x 4)
+
+    PointCloud (has many points)
+    Path (same as Point Cloud but with defined order)
+
+    MatrixFactory (Creates Matrixes for transformation, rotation etc.) [can also be done withoout a class, or Matrix constructors or similar]
+
+    Mesh (similar to path, but each point being connected to more than one)
+
+    Quanterions
