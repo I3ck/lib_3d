@@ -18,18 +18,79 @@ using T = int;
 
 
 TEST_CASE("testing point") {
+    T
+        x(0.1),
+        y(0.2),
+        z(0.3),
+        MAX_DELTA(0.00001);
+
+    Point<T> p{x, y, z};
 
     SECTION("testing initialisation") {
-        T
-            x(0.1),
-            y(0.2),
-            z(0.3);
-
-        Point<T> p{x, y, z};
-
         REQUIRE(p.x == x);
         REQUIRE(p.y == y);
         REQUIRE(p.z == z);
-
     }
+
+    SECTION("testing moving") {
+        T moveX(0.01), moveY(0.02), moveZ(0.03);
+
+        p.move_by(moveX, moveY, moveZ);
+
+        REQUIRE(p.x == x+moveX);
+        REQUIRE(p.y == y+moveY);
+        REQUIRE(p.z == z+moveZ);
+    }
+
+    SECTION("testing parsing from and to strings") {
+        ///@todo methods missing
+    }
+
+    SECTION("testing distances and abs") {
+        REQUIRE(abs(  p.abs() - (T)sqrt( pow(p.x,2) + pow(p.y,2) + pow(p.z,2) )  ) < MAX_DELTA);
+    }
+
+    SECTION("testing rotation") {
+        ///@todo add tests once matrixes are done and rotation was added
+    }
+
+    SECTION("testing mirroring") {
+        ///@todo add tests once mirroring was added
+    }
+
+    SECTION("testing equality checks") {
+        Point<T> p2 = p;
+        REQUIRE(p2 == p);
+        REQUIRE(p2.equal_to(p));
+
+        REQUIRE(p2.similar_to(p, MAX_DELTA));
+
+        p.move_by(MAX_DELTA/2, 0.0, 0.0);
+
+        REQUIRE(p2 != p);
+        REQUIRE(!p2.equal_to(p));
+
+        REQUIRE(p2.similar_to(p, MAX_DELTA));
+
+        p.move_by(MAX_DELTA*3, 0.0, 0.0);
+
+        REQUIRE(!p2.similar_to(p, MAX_DELTA));
+    }
+
+    SECTION("testing stringstream overload") {
+        ///@todo implement once from and to string are done
+    }
+
+    SECTION("testing center calculation") {
+        Point <T> center{}, centerShould{};
+
+        p = Point<T>{1,1,0.0};
+        Point<T> p2 = Point<T> {1,2,0.0};
+        centerShould = Point <T> {1, 1.5, 0.0};
+        center = p.center_between(p2);
+
+        REQUIRE(center.similar_to(centerShould, MAX_DELTA));
+    }
+
+
 }
