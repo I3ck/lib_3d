@@ -51,6 +51,26 @@ public:
         return out;
     }
 
+    inline Matrix<T> operator * (T other) const {
+        Matrix<T> out;
+        for(size_t i = 0; i < 4; ++i) {
+            for(size_t j =0; j < 4; ++j) {
+                out.m[i][j] = other * m[i][j];
+            }
+        }
+        return out;
+    }
+
+    inline friend Matrix<T> operator * (T other, Matrix<T> matrix) {
+        Matrix<T> out;
+        for(size_t i = 0; i < 4; ++i) {
+            for(size_t j =0; j < 4; ++j) {
+                out.m[i][j] = other * matrix.m[i][j];
+            }
+        }
+        return out;
+    }
+
 //------------------------------------------------------------------------------
 
     bool equal_to(const Matrix<T> &other) const {

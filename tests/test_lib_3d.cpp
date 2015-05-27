@@ -149,5 +149,13 @@ TEST_CASE("testing Matrix") {
 
         REQUIRE(m3 == m4);
 
+        m3 = m * 4.0;
+
+        REQUIRE(m3 == m4);
+
+        m3 = 4.0 * m;
+
+        REQUIRE(m3 == m4);
+
     }
 }
