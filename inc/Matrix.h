@@ -36,6 +36,42 @@ public:
     }
 
 //------------------------------------------------------------------------------
+
+    inline Matrix<T> operator * (const Matrix<T> &other) const {
+        Matrix<T> out;
+        for(size_t i = 0; i < 4; ++i) {
+            for(size_t j =0; j < 4; ++j) {
+                out.m[i][j] =
+                    m[i][0] * other.m[0][j] +
+				    m[i][1] * other.m[1][j] +
+				    m[i][2] * other.m[2][j] +
+				    m[i][3] * other.m[3][j];
+            }
+        }
+        return out;
+    }
+
+//------------------------------------------------------------------------------
+
+    bool equal_to(const Matrix<T> &other) const {
+        for(size_t i = 0; i < 4; ++i) {
+            for(size_t j =0; j < 4; ++j) {
+                if(m[i][j] != other.m[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+//------------------------------------------------------------------------------
+
+    bool operator == (const Matrix<T> &other) const {
+        return equal_to(other);
+    }
+
+    bool operator != (const Matrix<T> &other) const {
+        return !equal_to(other);
+    }
 };
 
 } // namespace lib_3d
