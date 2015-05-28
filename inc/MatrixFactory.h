@@ -28,6 +28,24 @@ public:
         return out;
     }
 
+    static Matrix<T> scaling(T x, T y, T z) {
+        Matrix<T> out;
+        out.m[0][0] = x  ;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0;  out.m[0][3] = 0.0;
+        out.m[1][0] = 0.0;  out.m[1][1] =   y;  out.m[1][2] = 0.0;  out.m[1][3] = 0.0;
+        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] =   z;  out.m[2][3] = 0.0;
+        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0;
+        return out;
+    }
+
+    static Matrix<T> scaling(T scale) {
+        Matrix<T> out;
+        out.m[0][0] = scale;  out.m[0][1] = 0.0;    out.m[0][2] = 0.0;    out.m[0][3] = 0.0;
+        out.m[1][0] = 0.0;    out.m[1][1] = scale;  out.m[1][2] = 0.0;    out.m[1][3] = 0.0;
+        out.m[2][0] = 0.0;    out.m[2][1] = 0.0;    out.m[2][2] = scale;  out.m[2][3] = 0.0;
+        out.m[3][0] = 0.0;    out.m[3][1] = 0.0;    out.m[3][2] = 0.0;    out.m[3][3] = 1.0;
+        return out;
+    }
+
 };
 
 } // namespace lib_3d

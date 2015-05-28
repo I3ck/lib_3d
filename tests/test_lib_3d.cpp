@@ -159,8 +159,11 @@ TEST_CASE("testing Matrix") {
 
         REQUIRE(m3 == m4);
     }
+}
 
-    SECTION("testing Matrix factories") {
+TEST_CASE("testing Matrix factories") {
+
+    SECTION("translation Matrix") {
         Matrix<T> m1 = MatrixFactory<T>::translation(1.0, 1.1, 1.2);
         Matrix<T> m2;
 
@@ -170,5 +173,25 @@ TEST_CASE("testing Matrix") {
         m2.m[3][0] = 0.0;  m2.m[3][1] = 0.0;  m2.m[3][2] = 0.0;  m2.m[3][3] = 1.0;
 
         REQUIRE(m1 == m2);
+    }
+
+    SECTION("scaling Matrix") {
+        Matrix<T> m1 = MatrixFactory<T>::scaling(0.5, 0.6, 0.7);
+
+        Matrix<T> m2;
+        m2.m[0][0] = 0.5;  m2.m[0][1] = 0.0;  m2.m[0][2] = 0.0;  m2.m[0][3] = 0.0;
+        m2.m[1][0] = 0.0;  m2.m[1][1] = 0.6;  m2.m[1][2] = 0.0;  m2.m[1][3] = 0.0;
+        m2.m[2][0] = 0.0;  m2.m[2][1] = 0.0;  m2.m[2][2] = 0.7;  m2.m[2][3] = 0.0;
+        m2.m[3][0] = 0.0;  m2.m[3][1] = 0.0;  m2.m[3][2] = 0.0;  m2.m[3][3] = 1.0;
+
+        REQUIRE(m1 == m2);
+
+        Matrix<T> m3 = MatrixFactory<T>::scaling(0.5);
+
+        Matrix<T> m4;
+        m4.m[0][0] = 0.5;  m4.m[0][1] = 0.0;  m4.m[0][2] = 0.0;  m4.m[0][3] = 0.0;
+        m4.m[1][0] = 0.0;  m4.m[1][1] = 0.5;  m4.m[1][2] = 0.0;  m4.m[1][3] = 0.0;
+        m4.m[2][0] = 0.0;  m4.m[2][1] = 0.0;  m4.m[2][2] = 0.5;  m4.m[2][3] = 0.0;
+        m4.m[3][0] = 0.0;  m4.m[3][1] = 0.0;  m4.m[3][2] = 0.0;  m4.m[3][3] = 1.0;
     }
 }
