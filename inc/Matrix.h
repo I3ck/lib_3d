@@ -38,12 +38,12 @@ public:
 
 //------------------------------------------------------------------------------
 
-    std::string to_string() const {
+    std::string to_string(std::string divider = " ") const {
         std::stringstream out;
-        out << m[0][0] << " " << m[0][1] << " " << m[0][2] << " " << m[0][3] << "\n"
-            << m[1][0] << " " << m[1][1] << " " << m[1][2] << " " << m[1][3] << "\n"
-            << m[2][0] << " " << m[2][1] << " " << m[2][2] << " " << m[2][3] << "\n"
-            << m[3][0] << " " << m[3][1] << " " << m[3][2] << " " << m[3][3] << "\n";
+        out << m[0][0] << divider << m[0][1] << divider << m[0][2] << divider << m[0][3] << "\n"
+            << m[1][0] << divider << m[1][1] << divider << m[1][2] << divider << m[1][3] << "\n"
+            << m[2][0] << divider << m[2][1] << divider << m[2][2] << divider << m[2][3] << "\n"
+            << m[3][0] << divider << m[3][1] << divider << m[3][2] << divider << m[3][3] << "\n";
         return out.str();
     }
 
