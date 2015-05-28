@@ -9,6 +9,7 @@
 #ifndef LIB_3D_H_INCLUDED
 #define LIB_3D_H_INCLUDED
 
+#include "inc/constants.h"
 #include "inc/Point.h"
 #include "inc/Matrix.h"
 #include "inc/MatrixFactory.h"
