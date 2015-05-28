@@ -1,3 +1,5 @@
+#include <iostream>
+
 #define CATCH_CONFIG_MAIN
 #include "../dependencies/Catch.h" //https://github.com/philsquared/Catch
 
@@ -149,11 +151,11 @@ TEST_CASE("testing Matrix") {
 
         REQUIRE(m3 == m4);
 
-        m3 = m * 4.0;
+        m3 = m2 * 4.0;
 
         REQUIRE(m3 == m4);
 
-        m3 = 4.0 * m;
+        m3 = 4.0 * m2;
 
         REQUIRE(m3 == m4);
 
