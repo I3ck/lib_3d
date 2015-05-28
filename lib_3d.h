@@ -11,5 +11,6 @@
 
 #include "inc/Point.h"
 #include "inc/Matrix.h"
+#include "inc/MatrixFactory.h"
 
 #endif // LIB_3D_H_INCLUDED

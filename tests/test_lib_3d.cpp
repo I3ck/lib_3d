@@ -158,6 +158,17 @@ TEST_CASE("testing Matrix") {
         m3 = 4.0 * m2;
 
         REQUIRE(m3 == m4);
+    }
 
+    SECTION("testing Matrix factories") {
+        Matrix<T> m1 = MatrixFactory<T>::translation(1.0, 1.1, 1.2);
+        Matrix<T> m2;
+
+        m2.m[0][0] = 1.0;  m2.m[0][1] = 0.0;  m2.m[0][2] = 0.0;  m2.m[0][3] = 1.0;
+        m2.m[1][0] = 0.0;  m2.m[1][1] = 1.0;  m2.m[1][2] = 0.0;  m2.m[1][3] = 1.1;
+        m2.m[2][0] = 0.0;  m2.m[2][1] = 0.0;  m2.m[2][2] = 1.0;  m2.m[2][3] = 1.2;
+        m2.m[3][0] = 0.0;  m2.m[3][1] = 0.0;  m2.m[3][2] = 0.0;  m2.m[3][3] = 1.0;
+
+        REQUIRE(m1 == m2);
     }
 }
