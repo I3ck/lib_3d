@@ -85,6 +85,13 @@ public:
 
 //------------------------------------------------------------------------------
 
+    inline friend std::ostream& operator << (std::ostream &os, const Matrix &matrix) {
+        os << matrix.to_string();
+        return os;
+    }
+
+//------------------------------------------------------------------------------
+
     bool equal_to(const Matrix<T> &other) const {
         for(size_t i = 0; i < 4; ++i) {
             for(size_t j =0; j < 4; ++j) {
