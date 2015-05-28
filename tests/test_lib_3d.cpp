@@ -194,4 +194,20 @@ TEST_CASE("testing Matrix factories") {
         m4.m[2][0] = 0.0;  m4.m[2][1] = 0.0;  m4.m[2][2] = 0.5;  m4.m[2][3] = 0.0;
         m4.m[3][0] = 0.0;  m4.m[3][1] = 0.0;  m4.m[3][2] = 0.0;  m4.m[3][3] = 1.0;
     }
+
+    ///@todo rotation (rather complicated)
+}
+
+TEST_CASE("Matrix*Point") {
+
+    SECTION("Translate point with Matrix") {
+        Point<T> p{1.0, 2.0, 3.0};
+        Matrix<T> m = MatrixFactory<T>::translation(1.0, 0.1, 0.3);
+
+        Point<T> p2 = p * m;
+
+        Point<T> p3{2.0, 2.1, 3.3};
+
+        REQUIRE(p2 == p3);
+    }
 }

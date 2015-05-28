@@ -12,13 +12,16 @@
 #include <sstream>
 #include <cmath>
 
+#include "Matrix.h"
+
 namespace lib_3d {
 
 template <typename T>
 class Point {
 
 public:
-    T x, y, z;
+    ///@todo w currently unused
+    T x, y, z, w;
 
 //------------------------------------------------------------------------------
 
@@ -123,8 +126,32 @@ public:
         return os;
     }
 
+    T& operator [] (size_t i) {
+        switch(i) {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            case 3:
+                return w;
+        }
+    }
+
 //------------------------------------------------------------------------------
 
+    ///@todo currently ignores W component
+    inline Point<T> operator * (const Matrix<T> &m) const {
+        Point<T> copy = *this;
+        Point<T> out;
+        for(size_t i = 0; i < 4; ++i) {
+            for(size_t j =0; j < 4; ++j) {
+                out[i] += m.m[i][j] * copy[j];
+            }
+        }
+        return out;
+    }
 };
 
 } // namespace lib_3d
