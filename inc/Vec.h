@@ -50,12 +50,18 @@ public:
 
     Vec<T> cross(const Vec<T> &other) const {
         Vec<T> out;
-        
+
         out.x = this->y * other.z - this->z * other.y;
         out.y = this->z * other.x - this->x * other.z;
         out.z = this->x * other.y - this->y * other.x;
 
         return out;
+    }
+
+//------------------------------------------------------------------------------
+
+    T dot(const Vec<T> &other) const {
+        return this->x * other.x + this->y * other.y + this->z * other.z;
     }
 
 //------------------------------------------------------------------------------

@@ -278,4 +278,11 @@ TEST_CASE("Testing Vec") {
 
         REQUIRE(vec1.cross(vec2) == vec3);
     }
+
+    SECTION("Dot product") {
+        Vec<T> vec1{1.0, 3.0, -5.0};
+        Vec<T> vec2{4.0, -2.0, -1.0};
+
+        REQUIRE(vec1.dot(vec2) == 3.0);
+    }
 }
