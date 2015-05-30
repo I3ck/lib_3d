@@ -250,4 +250,16 @@ TEST_CASE("Matrix*Point") {
     }
 }
 
+TEST_CASE("Testing Vec") {
+    SECTION("Normalizing") {
+        Vec<T> vec{5.0, 0.0, 0.0};
+
+        vec.normalize();
+
+        Vec<T> vec2{1.0, 0.0, 0.0};
+
+        REQUIRE(vec == vec2);
+    }
+}
+
 ///@todo tests for Vector missing
