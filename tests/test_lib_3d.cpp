@@ -319,4 +319,13 @@ TEST_CASE("Testing Vec") {
 
         REQUIRE(vec1 == vec2);
     }
+
+    SECTION("adding vector to point") {
+        Point<T> p1{0.0, 0.0, 0.0};
+        Point<T> p2{1.0, 1.1, 1.2};
+
+        Vec<T> vec1{1.0, 1.1, 1.2};
+
+        REQUIRE((p1 + vec1) == p2);
+    }
 }
