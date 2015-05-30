@@ -31,7 +31,7 @@ public:
 //------------------------------------------------------------------------------
 
     Vec<T>& normalize() {
-        const T length = sqrt( pow(this->x,2) + pow(this->y,2) + pow(this->z,2) );
+        const T length = length();
 
         this->x /= length;
         this->y /= length;
