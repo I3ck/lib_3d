@@ -13,7 +13,7 @@
 #include "inc/PointVec.h"
 #include "inc/Point.h"
 #include "inc/Vec.h"
-#include "inc/PointCloud"
+#include "inc/PointCloud.h"
 #include "inc/Matrix.h"
 #include "inc/MatrixFactory.h"
 
