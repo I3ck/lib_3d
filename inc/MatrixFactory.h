@@ -73,6 +73,20 @@ public:
         return rotX * rotY * rotZ;
     }
 
+    static Matrix<T> perspective(T width, T height, T close, T away, T fovDeg) {
+        T fov = LIB_3D_DEG_TO_RAD * fovDeg;
+        T ratio = width/height;
+        T range = close - away;
+        T tanFovHalf = tan(fov/2.0);
+
+        Matrix<T> out;
+        out.m[0][0] = 1.0 / (tanFovHalf * away);  out.m[0][1] = 0.0;               out.m[0][2] = 0.0;                      out.m[0][3] = 0.0;
+        out.m[1][0] = 0.0;                        out.m[1][1] = 1.0 / tanFovHalf;  out.m[1][2] = 0.0;                      out.m[1][3] = 0.0;
+        out.m[2][0] = 0.0;                        out.m[2][1] = 0.0;               out.m[2][2] = (-close - away) / range;  out.m[2][3] = 2.0 * away * close / range;
+        out.m[3][0] = 0.0;                        out.m[3][1] = 0.0;               out.m[3][2] = 1.0;                      out.m[3][3] = 0.0;
+        return out;
+    }
+
 };
 
 } // namespace lib_3d

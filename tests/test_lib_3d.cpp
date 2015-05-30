@@ -242,4 +242,10 @@ TEST_CASE("Matrix*Point") {
         p = p * mScale;
         REQUIRE(p.similar_to(Point<T>{2.0, 6.0, 12.0}, MAX_DELTA));
     }
+
+    SECTION("Using perspective on a point") {
+        ///@todo need some proper compare results
+        ///@todo not yet implemented
+        Matrix<T> mPers = MatrixFactory<T>::perspective(300.0, 300.0, 1.0, 100.0, 90.0);
+    }
 }

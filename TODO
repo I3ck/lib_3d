@@ -15,3 +15,5 @@ Classes
     Quanterions
 
     still use Points? Differ between Vectors and Points? Or just make both the same?
+
+    or make both derive from PointVector or similar
