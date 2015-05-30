@@ -31,7 +31,7 @@ public:
 //------------------------------------------------------------------------------
 
     Vec<T>& normalize() {
-        const T length = length();
+        const T length = this->length();
 
         this->x /= length;
         this->y /= length;
