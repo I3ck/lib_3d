@@ -210,4 +210,27 @@ TEST_CASE("Matrix*Point") {
 
         REQUIRE(p2.similar_to(p3, MAX_DELTA));
     }
+
+    SECTION("Rotate point with Matrix") {
+        Point<T> p{1.0, 0.0, 0.0};
+
+        Matrix<T> mRotX = MatrixFactory<T>::rotation(90.0, 0.0, 0.0);
+        Matrix<T> mRotY = MatrixFactory<T>::rotation(0.0, 90.0, 0.0);
+        Matrix<T> mRotZ = MatrixFactory<T>::rotation(0.0, 0.0, 90.0);
+
+        p = p * mRotZ;
+        REQUIRE(p.similar_to(Point<T>{0.0, 1.0, 0.0}, MAX_DELTA));
+
+        p = p * mRotZ;
+        REQUIRE(p.similar_to(Point<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
+
+        p = p * mRotZ;
+        REQUIRE(p.similar_to(Point<T>{0.0, -1.0, 0.0}, MAX_DELTA));
+
+        p = p * mRotX;
+        REQUIRE(p.similar_to(Point<T>{0.0, 0.0, -1.0}, MAX_DELTA));
+
+        p = p * mRotY;
+        REQUIRE(p.similar_to(Point<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
+    }
 }
