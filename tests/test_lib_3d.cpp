@@ -233,4 +233,13 @@ TEST_CASE("Matrix*Point") {
         p = p * mRotY;
         REQUIRE(p.similar_to(Point<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
     }
+
+    SECTION("Scaling a point with Matrix") {
+        Point<T> p{1.0, 2.0, 3.0};
+
+        Matrix<T> mScale = MatrixFactory<T>::scaling(2.0, 3.0, 4.0);
+
+        p = p * mScale;
+        REQUIRE(p.similar_to(Point<T>{2.0, 6.0, 12.0}, MAX_DELTA));
+    }
 }

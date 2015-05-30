@@ -13,3 +13,5 @@ Classes
     Mesh (similar to path, but each point being connected to more than one)
 
     Quanterions
+
+    still use Points? Differ between Vectors and Points? Or just make both the same?
