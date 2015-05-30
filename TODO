@@ -19,3 +19,5 @@ Classes
     or make both derive from PointVector or similar
 
     make PointVec virtual and never use it?
+
+    rename PointVec to BasePointVec or BasePointVector
