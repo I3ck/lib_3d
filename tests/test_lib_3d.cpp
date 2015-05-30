@@ -260,6 +260,14 @@ TEST_CASE("Testing Vec") {
 
         REQUIRE(vec == vec2);
     }
-}
 
-///@todo tests for Vector missing
+    SECTION("Retrieving length") {
+        Vec<T> vec{0.0, 0.0, 0.0};
+
+        REQUIRE(vec.length() == 0.0);
+
+        Vec<T> vec2{1.0, 0.0, 0.0};
+
+        REQUIRE(vec2.length() == 1.0);
+    }
+}
