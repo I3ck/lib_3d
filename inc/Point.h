@@ -10,6 +10,7 @@
 #define POINT_H_INCLUDED
 
 #include "PointVec.h"
+#include "Vec.h"
 
 namespace lib_3d {
 
@@ -37,6 +38,12 @@ public:
     }
 
 //------------------------------------------------------------------------------
+
+    inline Vec<T> operator - (const Point<T> &other) const {
+        return Vec<T>{this->x - other.x,
+                      this->y - other.y,
+                      this->z - other.z};
+    }
 
     inline Point<T> operator * (const Matrix<T> &m) const {
         Point<T> copy = *this;

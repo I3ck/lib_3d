@@ -309,4 +309,14 @@ TEST_CASE("Testing Vec") {
 
         REQUIRE(vec1.dot(vec2) == 3.0);
     }
+
+    SECTION("Vec between points") {
+        Point<T> p1{0.0, 0.0, 0.0};
+        Point<T> p2{1.0, 1.1, 1.2};
+
+        Vec<T> vec1{-1.0, -1.1, -1.2};
+        Vec<T> vec2 = p1 - p2;
+
+        REQUIRE(vec1 == vec2);
+    }
 }
