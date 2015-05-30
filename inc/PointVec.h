@@ -101,13 +101,6 @@ public:
 
 //------------------------------------------------------------------------------
 
-    PointVec center_between(PointVec other) const {
-        return PointVec{(T)(x + (other.x - x) / 2.0), (T)(y + (other.y - y) / 2.0), (T)(z + (other.z - z) / 2.0)};
-    }
-
-
-//------------------------------------------------------------------------------
-
     bool similar_to(PointVec other, T maxDistance) const {
         if (distance_to(other) > maxDistance)
             return false;

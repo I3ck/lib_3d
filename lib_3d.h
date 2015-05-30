@@ -11,6 +11,7 @@
 
 #include "inc/constants.h"
 #include "inc/PointVec.h"
+#include "inc/Point.h"
 #include "inc/Matrix.h"
 #include "inc/MatrixFactory.h"
 
