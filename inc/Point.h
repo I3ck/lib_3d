@@ -24,11 +24,11 @@ public:
 
 //------------------------------------------------------------------------------
 
-    Point(T x=0.0, T y=0.0, T z=0.0, T w=1.0) :
+    Point(T x=0.0, T y=0.0, T z=0.0) :
         x(x),
         y(y),
         z(z),
-        w(w)
+        w(1.0)
     {
     }
 
@@ -135,8 +135,7 @@ public:
     bool operator < (Point other) const {
         return x < other.x ||
                (x == other.x && y < other.y) ||
-               (x == other.x && y == other.y && z < other.z) ||
-               (x == other.x && y == other.y && z == other.z && w < other.w);
+               (x == other.x && y == other.y && z < other.z);
     }
 
     friend std::ostream &operator << (std::ostream &os, Point point) {
