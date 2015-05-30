@@ -30,6 +30,15 @@ public:
     ~PointCloud() {
 
     }
+
+//------------------------------------------------------------------------------
+
+    inline PointCloud<T> operator * (const Matrix<T> &m) const {
+        PointCloud<T> out;
+        for(const auto& point : points)
+            out.points.push_back( point * m ); ///@todo use "add or proper method once implemented"
+        return out;
+    }
 };
 
 } // namespace lib_3d
