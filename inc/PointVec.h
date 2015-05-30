@@ -1,13 +1,13 @@
 /**
- * \file    Point.h
+ * \file    PointVec.h
  * \author  Martin Buck
  * \date    May 2015
  * \version pre-release
  * \brief   TODO
  */
 
-#ifndef POINT_H_INCLUDED
-#define POINT_H_INCLUDED
+#ifndef POINTVEC_H_INCLUDED
+#define POINTVEC_H_INCLUDED
 
 #include <sstream>
 #include <cmath>
@@ -17,14 +17,14 @@
 namespace lib_3d {
 
 template <typename T>
-class Point {
+class PointVec {
 
 public:
     T x, y, z, w;
 
 //------------------------------------------------------------------------------
 
-    Point(T x=0.0, T y=0.0, T z=0.0) :
+    PointVec(T x=0.0, T y=0.0, T z=0.0) :
         x(x),
         y(y),
         z(z),
@@ -34,20 +34,20 @@ public:
 
 //------------------------------------------------------------------------------
 
-    ~Point() {
+    ~PointVec() {
 
     }
 
 //------------------------------------------------------------------------------
 
-    Point& move_by(T x, T y, T z) {
+    PointVec& move_by(T x, T y, T z) {
         this->x+=x;
         this->y+=y;
         this->z+=z;
         return *this;
     }
 
-    Point& move_by(Point other) {
+    PointVec& move_by(PointVec other) {
         this->x+=other.x;
         this->y+=other.y;
         this->z+=other.z;
@@ -60,8 +60,8 @@ public:
     ///@todo mirror on point
     ///@todo mirror on panes
 
-    Point& mirror_point(T xValue = 0, T yValue = 0, T zValue = 0) {
-        mirror_point(Point{xValue, yValue});
+    PointVec& mirror_point(T xValue = 0, T yValue = 0, T zValue = 0) {
+        mirror_point(PointVec{xValue, yValue});
         return *this;
     }
 
@@ -91,24 +91,24 @@ public:
 
 //------------------------------------------------------------------------------
 
-    T distance_to(Point other) const {
+    T distance_to(PointVec other) const {
         return sqrt(  pow(x-other.x,2) + pow(y-other.y,2) + pow(z-other.z,2)  );
     }
 
     T distance_to(T x, T y, T z) const {
-        return distance_to(Point{x,y,z});
+        return distance_to(PointVec{x,y,z});
     }
 
 //------------------------------------------------------------------------------
 
-    Point center_between(Point other) const {
-        return Point{(T)(x + (other.x - x) / 2.0), (T)(y + (other.y - y) / 2.0), (T)(z + (other.z - z) / 2.0)};
+    PointVec center_between(PointVec other) const {
+        return PointVec{(T)(x + (other.x - x) / 2.0), (T)(y + (other.y - y) / 2.0), (T)(z + (other.z - z) / 2.0)};
     }
 
 
 //------------------------------------------------------------------------------
 
-    bool similar_to(Point other, T maxDistance) const {
+    bool similar_to(PointVec other, T maxDistance) const {
         if (distance_to(other) > maxDistance)
             return false;
         return true;
@@ -116,7 +116,7 @@ public:
 
 //------------------------------------------------------------------------------
 
-    bool equal_to (Point other) const {
+    bool equal_to (PointVec other) const {
         if (x == other.x && y == other.y && z == other.z && w == other.w)
             return true;
         return false;
@@ -124,21 +124,21 @@ public:
 
 //------------------------------------------------------------------------------
 
-    bool operator == (Point other) const {
+    bool operator == (PointVec other) const {
         return equal_to(other);
     }
 
-    bool operator != (Point other) const {
+    bool operator != (PointVec other) const {
         return !equal_to(other);
     }
 
-    bool operator < (Point other) const {
+    bool operator < (PointVec other) const {
         return x < other.x ||
                (x == other.x && y < other.y) ||
                (x == other.x && y == other.y && z < other.z);
     }
 
-    friend std::ostream &operator << (std::ostream &os, Point point) {
+    friend std::ostream &operator << (std::ostream &os, PointVec point) {
         os << point.to_string();
         return os;
     }
@@ -158,9 +158,9 @@ public:
 
 //------------------------------------------------------------------------------
 
-    inline Point<T> operator * (const Matrix<T> &m) const {
-        Point<T> copy = *this;
-        Point<T> out;
+    inline PointVec<T> operator * (const Matrix<T> &m) const {
+        PointVec<T> copy = *this;
+        PointVec<T> out;
         for(size_t i = 0; i < 4; ++i) {
             for(size_t j =0; j < 4; ++j) {
                 out[i] += m.m[i][j] * copy[j];
@@ -173,4 +173,4 @@ public:
 } // namespace lib_3d
 
 
-#endif // POINT_H_INCLUDED
+#endif // POINTVEC_H_INCLUDED
