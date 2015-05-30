@@ -62,7 +62,7 @@ public:
 
         rotY.m[0][0] = cos(y);  rotY.m[0][1] = 0.0;      rotY.m[0][2] = sin(y);   rotY.m[0][3] = 0.0;
         rotY.m[1][0] = 0.0;     rotY.m[1][1] = 1.0;      rotY.m[1][2] = 0.0;      rotY.m[1][3] = 0.0;
-        rotY.m[2][0] = -sin(y); rotY.m[2][1] = 0.0;      rotY.m[2][2] = cos(x);   rotY.m[2][3] = 0.0;
+        rotY.m[2][0] = -sin(y); rotY.m[2][1] = 0.0;      rotY.m[2][2] = cos(y);   rotY.m[2][3] = 0.0;
         rotY.m[3][0] = 0.0;     rotY.m[3][1] = 0.0;      rotY.m[3][2] = 0.0;      rotY.m[3][3] = 1.0;
 
         rotZ.m[0][0] = cos(z);  rotZ.m[0][1] = -sin(z);  rotZ.m[0][2] = 0.0;      rotZ.m[0][3] = 0.0;
