@@ -270,4 +270,12 @@ TEST_CASE("Testing Vec") {
 
         REQUIRE(vec2.length() == 1.0);
     }
+
+    SECTION("Cross product") {
+        Vec<T> vec1{1.0, 2.0, 3.0};
+        Vec<T> vec2{-7.0, 8.0, 9.0};
+        Vec<T> vec3{-6.0, -30.0, 22.0};
+
+        REQUIRE(vec1.cross(vec2) == vec3);
+    }
 }

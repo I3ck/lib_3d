@@ -48,6 +48,18 @@ public:
 
 //------------------------------------------------------------------------------
 
+    Vec<T> cross(const Vec<T> &other) const {
+        Vec<T> out;
+        
+        out.x = this->y * other.z - this->z * other.y;
+        out.y = this->z * other.x - this->x * other.z;
+        out.z = this->x * other.y - this->y * other.x;
+
+        return out;
+    }
+
+//------------------------------------------------------------------------------
+
     inline Vec<T> operator * (const Matrix<T> &m) const {
         Vec<T> copy = *this;
         Vec<T> out;
