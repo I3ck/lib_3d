@@ -19,13 +19,13 @@ using T = int;
 #endif
 
 
-TEST_CASE("testing point") {
-    T
-        x(0.1),
-        y(0.2),
-        z(0.3),
-        MAX_DELTA(0.00001);
+T
+    x(0.1),
+    y(0.2),
+    z(0.3),
+    MAX_DELTA(0.00001);
 
+TEST_CASE("testing point") {
     Point<T> p{x, y, z};
 
     SECTION("testing initialisation") {
@@ -204,13 +204,10 @@ TEST_CASE("Matrix*Point") {
         Point<T> p{1.0, 2.0, 3.0};
         Matrix<T> m = MatrixFactory<T>::translation(1.0, 0.1, 0.3);
 
-        std::cout << m << std::endl;
-        std::cout << p << std::endl;
         Point<T> p2 = p * m;
-        std::cout << p2 << std::endl;
 
         Point<T> p3{2.0, 2.1, 3.3};
 
-        REQUIRE(p2 == p3);
+        REQUIRE(p2.similar_to(p3, MAX_DELTA));
     }
 }
