@@ -204,7 +204,10 @@ TEST_CASE("Matrix*Point") {
         Point<T> p{1.0, 2.0, 3.0};
         Matrix<T> m = MatrixFactory<T>::translation(1.0, 0.1, 0.3);
 
+        std::cout << m << std::endl;
+        std::cout << p << std::endl;
         Point<T> p2 = p * m;
+        std::cout << p2 << std::endl;
 
         Point<T> p3{2.0, 2.1, 3.3};
 

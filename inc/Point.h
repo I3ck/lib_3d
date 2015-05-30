@@ -20,8 +20,23 @@ template <typename T>
 class Point {
 
 public:
-    ///@todo w currently unused
     T x, y, z, w;
+
+//------------------------------------------------------------------------------
+
+    Point(T x=0.0, T y=0.0, T z=0.0, T w=1.0) :
+        x(x),
+        y(y),
+        z(z),
+        w(w)
+    {
+    }
+
+//------------------------------------------------------------------------------
+
+    ~Point() {
+
+    }
 
 //------------------------------------------------------------------------------
 
@@ -102,7 +117,7 @@ public:
 //------------------------------------------------------------------------------
 
     bool equal_to (Point other) const {
-        if (x == other.x && y == other.y && z == other.z)
+        if (x == other.x && y == other.y && z == other.z && w == other.w)
             return true;
         return false;
     }
@@ -118,7 +133,10 @@ public:
     }
 
     bool operator < (Point other) const {
-        return x < other.x || (x == other.x && y < other.y) || (x == other.x && y == other.y && z < other.z);
+        return x < other.x ||
+               (x == other.x && y < other.y) ||
+               (x == other.x && y == other.y && z < other.z) ||
+               (x == other.x && y == other.y && z == other.z && w < other.w);
     }
 
     friend std::ostream &operator << (std::ostream &os, Point point) {
@@ -141,7 +159,6 @@ public:
 
 //------------------------------------------------------------------------------
 
-    ///@todo currently ignores W component
     inline Point<T> operator * (const Matrix<T> &m) const {
         Point<T> copy = *this;
         Point<T> out;
