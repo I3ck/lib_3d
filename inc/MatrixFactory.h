@@ -20,6 +20,15 @@ public:
     ///@todo overloads for Point or maybe later Vector
     ///or add proper methods to Point / Vector to easily achieve this?
 
+    static Matrix<T> unity() {
+        Matrix<T> out;
+        out.m[0][0] = 1.0;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0; out.m[0][3] = 0.0;
+        out.m[1][0] = 0.0;  out.m[1][1] = 1.0;  out.m[1][2] = 0.0; out.m[1][3] = 0.0;
+        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] = 1.0; out.m[2][3] = 0.0;
+        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0; out.m[3][3] = 1.0;
+        return out;
+    }
+
     static Matrix<T> translation(T x, T y, T z) {
         Matrix<T> out;
         out.m[0][0] = 1.0;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0; out.m[0][3] = x;
