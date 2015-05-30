@@ -249,3 +249,5 @@ TEST_CASE("Matrix*Point") {
         Matrix<T> mPers = MatrixFactory<T>::perspective(300.0, 300.0, 1.0, 100.0, 90.0);
     }
 }
+
+///@todo tests for Vector missing
