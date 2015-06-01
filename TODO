@@ -29,3 +29,5 @@ Classes
     remove the copy = *this from matrix multiplication methods
 
     use worker threads when working on a lot of data
+
+    make pointcloud data a kde tree?
