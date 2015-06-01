@@ -330,4 +330,18 @@ TEST_CASE("Testing Vec") {
     }
 }
 
+TEST_CASE("PointCloud") {
+    SECTION("Constructors") {
+        vector< Point<T> > points = { {0.0, 1.0, 1.2}, {2.0, 2.1, 2.2} };
+
+        PointCloud<T> pointCloud;
+
+        REQUIRE(pointCloud.size() == 0);
+
+        PointCloud<T> pointCloud2(points.begin(), points.end());
+
+        REQUIRE(pointCloud2.size() == 2);
+    }
+}
+
 ///@todo test PointCloud
