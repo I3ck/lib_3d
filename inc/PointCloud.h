@@ -91,7 +91,7 @@ public:
         return *this;
     }
 
-    PointCloud& emplace_back(PointCloud<T> point) {
+    PointCloud& emplace_back(Point<T> point) {
         points.emplace_back(point);
         return *this;
     }
