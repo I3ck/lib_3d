@@ -437,8 +437,48 @@ TEST_CASE("PointCloud") {
         pointCloud += p5;
 
         REQUIRE(centerShould == pointCloud.center());
-
     }
+
+    SECTION("similarity and equality") {
+        Point<T>
+            p1{0.0, 0.0, 0.0},
+            p2{1.0, 0.0, 0.0},
+            p3{2.0, 0.0, 0.0},
+            p4{3.0, 0.0, 0.0},
+            p5{4.0, 0.0, 0.0};
+
+        PointCloud<T> pointCloud1;
+        pointCloud1 += p1;
+        pointCloud1 += p2;
+        pointCloud1 += p3;
+        pointCloud1 += p4;
+        pointCloud1 += p5;
+
+        PointCloud<T> pointCloud2 = pointCloud1;
+
+        REQUIRE(pointCloud1.equal_to(pointCloud2));
+        REQUIRE(pointCloud1 == pointCloud2);
+        REQUIRE(pointCloud1.similar_to(pointCloud2, MAX_DELTA));
+
+        p5.move_by(0.1*MAX_DELTA, 0.0, 0.0);
+
+        pointCloud2.pop_back();
+        pointCloud2 += p5;
+
+        REQUIRE(!pointCloud1.equal_to(pointCloud2));
+        REQUIRE(pointCloud1 != pointCloud2);
+        REQUIRE(pointCloud1.similar_to(pointCloud2, MAX_DELTA));
+
+        p5.move_by(1.0*MAX_DELTA, 0.0, 0.0);
+
+        pointCloud2.pop_back();
+        pointCloud2 += p5;
+
+        REQUIRE(!pointCloud1.equal_to(pointCloud2));
+        REQUIRE(pointCloud1 != pointCloud2);
+        REQUIRE(!pointCloud1.similar_to(pointCloud2, MAX_DELTA));
+    }
+
 }
 
 ///@todo test PointCloud
