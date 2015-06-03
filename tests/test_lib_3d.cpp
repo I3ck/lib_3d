@@ -342,6 +342,37 @@ TEST_CASE("PointCloud") {
 
         REQUIRE(pointCloud2.size() == 2);
     }
+
+    SECTION("to and from string") {
+        ///@todo
+    }
+
+    SECTION("to and from file") {
+        ///@todo
+    }
+
+    SECTION("filling and emptying") {
+        Point<T> p1, p2, p3, p4;
+        PointCloud<T> pointCloud1, pointCloud2;
+
+        pointCloud1.push_back(p1);
+        pointCloud1.push_back(0.0, 0.0, 0.0);
+        pointCloud1.emplace_back(0.0, 0.0, 0.0);
+        pointCloud1.emplace_back(Point<T>{0.0, 0.0, 0.0});
+        pointCloud1 += p2;
+
+        REQUIRE(pointCloud1.size() == 5);
+
+        pointCloud1.pop_back();
+
+        REQUIRE(pointCloud1.size() == 4);
+
+        pointCloud2.push_back(pointCloud1);
+        pointCloud2 += pointCloud1;
+        pointCloud2 += p1;
+
+        REQUIRE(pointCloud2.size() == 9);
+    }
 }
 
 ///@todo test PointCloud
