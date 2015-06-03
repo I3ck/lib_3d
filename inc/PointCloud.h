@@ -207,7 +207,7 @@ public:
 
 //------------------------------------------------------------------------------
 
-PointCloud& range(unsigned int indexStart, unsigned int indexEnd) {
+    PointCloud& range(unsigned int indexStart, unsigned int indexEnd) {
         if(indexStart > indexEnd)
             return *this;
 
@@ -217,7 +217,7 @@ PointCloud& range(unsigned int indexStart, unsigned int indexEnd) {
         if(indexStart == 0 && indexEnd == size()-1)
             return *this;
 
-            PointCloud<T> tmp;
+        PointCloud<T> tmp;
 
         for(unsigned int i = indexStart; i <= indexEnd; ++i) {
             tmp += (*this)[i];

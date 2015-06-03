@@ -479,6 +479,31 @@ TEST_CASE("PointCloud") {
         REQUIRE(!pointCloud1.similar_to(pointCloud2, MAX_DELTA));
     }
 
+    SECTION("range") {
+        Point<T>
+            p1{0.0, 0.0, 0.0},
+            p2{1.0, 0.0, 0.0},
+            p3{2.0, 0.0, 0.0},
+            p4{3.0, 0.0, 0.0},
+            p5{4.0, 0.0, 0.0};
+
+        PointCloud<T> pointCloud1;
+        pointCloud1 += p1;
+        pointCloud1 += p2;
+        pointCloud1 += p3;
+        pointCloud1 += p4;
+        pointCloud1 += p5;
+
+        PointCloud<T> pointCloud2;
+        pointCloud2 += p2;
+        pointCloud2 += p3;
+
+        REQUIRE(pointCloud1.range(0, 100) == pointCloud1);
+        REQUIRE(pointCloud1.range(50, 1) == pointCloud1);
+
+        REQUIRE(pointCloud1.range(1,2) == pointCloud2);
+    }
+
 }
 
 ///@todo test PointCloud
