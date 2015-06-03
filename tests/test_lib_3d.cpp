@@ -351,7 +351,7 @@ TEST_CASE("PointCloud") {
         ///@todo
     }
 
-    SECTION("filling and emptying") {
+    SECTION("filling and emptying and size") {
         Point<T> p1, p2, p3, p4;
         PointCloud<T> pointCloud1, pointCloud2;
 
@@ -372,6 +372,24 @@ TEST_CASE("PointCloud") {
         pointCloud2 += p1;
 
         REQUIRE(pointCloud2.size() == 9);
+    }
+
+    SECTION("Length") {
+        Point<T>
+            p1{0.0, 0.0, 0.0},
+            p2{1.0, 0.0, 0.0},
+            p3{2.0, 0.0, 0.0},
+            p4{3.0, 0.0, 0.0},
+            p5{4.0, 0.0, 0.0};
+
+        PointCloud<T> pointCloud;
+        pointCloud += p1;
+        pointCloud += p2;
+        pointCloud += p3;
+        pointCloud += p4;
+        pointCloud += p5;
+
+        REQUIRE(pointCloud.length() == 4.0);
     }
 }
 
