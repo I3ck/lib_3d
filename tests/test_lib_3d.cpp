@@ -419,6 +419,26 @@ TEST_CASE("PointCloud") {
 
         REQUIRE(pointCloud.size() == 0);
     }
+
+    SECTION("center") {
+        Point<T>
+            p1{0.0, 0.0, 0.0},
+            p2{1.0, 0.0, 0.0},
+            p3{2.0, 0.0, 0.0},
+            p4{3.0, 0.0, 0.0},
+            p5{4.0, 0.0, 0.0},
+            centerShould{2.0, 0.0, 0.0};
+
+        PointCloud<T> pointCloud;
+        pointCloud += p1;
+        pointCloud += p2;
+        pointCloud += p3;
+        pointCloud += p4;
+        pointCloud += p5;
+
+        REQUIRE(centerShould == pointCloud.center());
+
+    }
 }
 
 ///@todo test PointCloud
