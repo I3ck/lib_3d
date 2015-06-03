@@ -345,6 +345,7 @@ TEST_CASE("PointCloud") {
 
     SECTION("to and from string") {
         ///@todo
+        ///@also add << test
     }
 
     SECTION("to and from file") {
@@ -504,7 +505,7 @@ TEST_CASE("PointCloud") {
         REQUIRE(pointCloud1.range(1,2) == pointCloud2);
     }
 
-    SECTION("iterating") {
+    SECTION("iterating and random access") {
         vector< Point<T> > points;
         points.push_back(Point<T>{0.0, 0.0, 0.0});
         points.push_back(Point<T>{1.0, 0.0, 0.0});
@@ -521,6 +522,7 @@ TEST_CASE("PointCloud") {
 
         for(auto point : pointCloud) {
             REQUIRE(point == points[i]);
+            REQUIRE(point == pointCloud[i]);
             ++i;
         }
     }
