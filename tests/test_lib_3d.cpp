@@ -392,7 +392,7 @@ TEST_CASE("PointCloud") {
         REQUIRE(pointCloud.length() == 4.0);
     }
 
-    SECTION("first and last") {
+    SECTION("first, last, clear and reverse") {
         Point<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
@@ -409,6 +409,15 @@ TEST_CASE("PointCloud") {
 
         REQUIRE(pointCloud.first() == p1);
         REQUIRE(pointCloud.last() == p5);
+
+        pointCloud.reverse();
+
+        REQUIRE(pointCloud.first() == p5);
+        REQUIRE(pointCloud.last() == p1);
+
+        pointCloud.clear();
+
+        REQUIRE(pointCloud.size() == 0);
     }
 }
 
