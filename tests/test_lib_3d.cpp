@@ -391,6 +391,25 @@ TEST_CASE("PointCloud") {
 
         REQUIRE(pointCloud.length() == 4.0);
     }
+
+    SECTION("first and last") {
+        Point<T>
+            p1{0.0, 0.0, 0.0},
+            p2{1.0, 0.0, 0.0},
+            p3{2.0, 0.0, 0.0},
+            p4{3.0, 0.0, 0.0},
+            p5{4.0, 0.0, 0.0};
+
+        PointCloud<T> pointCloud;
+        pointCloud += p1;
+        pointCloud += p2;
+        pointCloud += p3;
+        pointCloud += p4;
+        pointCloud += p5;
+
+        REQUIRE(pointCloud.first() == p1);
+        REQUIRE(pointCloud.last() == p5);
+    }
 }
 
 ///@todo test PointCloud
