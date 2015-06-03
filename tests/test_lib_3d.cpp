@@ -504,6 +504,27 @@ TEST_CASE("PointCloud") {
         REQUIRE(pointCloud1.range(1,2) == pointCloud2);
     }
 
+    SECTION("iterating") {
+        vector< Point<T> > points;
+        points.push_back(Point<T>{0.0, 0.0, 0.0});
+        points.push_back(Point<T>{1.0, 0.0, 0.0});
+        points.push_back(Point<T>{2.0, 0.0, 0.0});
+        points.push_back(Point<T>{3.0, 0.0, 0.0});
+        points.push_back(Point<T>{4.0, 0.0, 0.0});
+
+        PointCloud<T> pointCloud;
+
+        for(auto i : points)
+            pointCloud += i;
+
+        int i = 0;
+
+        for(auto point : pointCloud) {
+            REQUIRE(point == points[i]);
+            ++i;
+        }
+    }
+
 }
 
 ///@todo test PointCloud
