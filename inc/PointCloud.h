@@ -15,10 +15,10 @@
 
 namespace lib_3d {
 
-template <class POINTTYPE>
+template <typename POINTTYPE>
 class PointCloud {
 private:
-    typedef typename POINTTYPE::value_type PRECISION;
+    typedef typename POINTTYPE::value_type T;
     std::vector<POINTTYPE> points;
 
 public:
@@ -81,7 +81,7 @@ public:
         return *this;
     }
 
-    PointCloud& push_back(PRECISION x, PRECISION y, PRECISION z) {
+    PointCloud& push_back(T x, T y, T z) {
         push_back(POINTTYPE{x, y, z});
         return *this;
     }
@@ -97,7 +97,7 @@ public:
         return *this;
     }
 
-    PointCloud& emplace_back(PRECISION x, PRECISION y, PRECISION z) {
+    PointCloud& emplace_back(T x, T y, T z) {
         emplace_back(POINTTYPE{x, y, z});
         return *this;
     }
@@ -123,10 +123,10 @@ public:
 
 //------------------------------------------------------------------------------
 
-    PRECISION length() const {
+    T length() const {
         if(size() < 2)
             return 0;
-        PRECISION l(0);
+        T l(0);
 
         for(auto i = points.cbegin()+1; i != points.cend(); ++i)
             l += i->distance_to(*(i-1));
@@ -168,7 +168,7 @@ public:
 //------------------------------------------------------------------------------
 
     POINTTYPE center() const {
-        PRECISION
+        T
             sumX(0.0),
             sumY(0.0),
             sumZ(0.0);
@@ -184,7 +184,7 @@ public:
 
 //------------------------------------------------------------------------------
 
-    bool similar_to(const PointCloud &other, PRECISION maxDistance) const {
+    bool similar_to(const PointCloud &other, T maxDistance) const {
         if(size() != other.size())
             return false;
         for(unsigned int i = 0; i < size(); ++i) {
@@ -294,7 +294,7 @@ public:
         return points[i];
     }
 
-    operator std::vector < Point <PRECISION> > () const {
+    operator std::vector < Point <T> > () const {
         return points;
     }
 
@@ -305,7 +305,7 @@ public:
         return os;
     }
 
-    inline PointCloud<POINTTYPE> operator * (const Matrix<PRECISION> &m) const {
+    inline PointCloud<POINTTYPE> operator * (const Matrix<T> &m) const {
         PointCloud<POINTTYPE> out;
         for(const auto& point : points)
             out.points.push_back( point * m ); ///@todo use "add or proper method once implemented"
