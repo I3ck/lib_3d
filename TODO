@@ -27,3 +27,5 @@ Classes
     use worker threads when working on a lot of data
 
     make pointcloud data a kde tree?
+
+    currently using * as scalar product for point, but not for quaternion

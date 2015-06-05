@@ -14,6 +14,7 @@
 #include "inc/Point.h"
 #include "inc/Vec.h"
 #include "inc/PointCloud.h"
+#include "Quaternion.h"
 #include "inc/Matrix.h"
 #include "inc/MatrixFactory.h"
 

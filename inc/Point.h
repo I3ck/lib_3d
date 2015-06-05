@@ -20,7 +20,7 @@ class Point : public PointVec<T> {
 
 public:
 
-    typedef T value_type;
+    typedef T value_type; ///@todo move directly to PointVec
 
     Point(T x=0.0, T y=0.0, T z=0.0) :
         PointVec<T>(x, y, z)

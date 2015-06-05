@@ -526,7 +526,6 @@ TEST_CASE("PointCloud") {
             ++i;
         }
     }
-
 }
 
-///@todo test PointCloud
+///@todo test Quaternion
