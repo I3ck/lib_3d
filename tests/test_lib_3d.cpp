@@ -334,11 +334,11 @@ TEST_CASE("PointCloud") {
     SECTION("Constructors") {
         vector< Point<T> > points = { {0.0, 1.0, 1.2}, {2.0, 2.1, 2.2} };
 
-        PointCloud<T> pointCloud;
+        PointCloud< Point<T> > pointCloud;
 
         REQUIRE(pointCloud.size() == 0);
 
-        PointCloud<T> pointCloud2(points.begin(), points.end());
+        PointCloud< Point<T> > pointCloud2(points.begin(), points.end());
 
         REQUIRE(pointCloud2.size() == 2);
     }
@@ -354,7 +354,7 @@ TEST_CASE("PointCloud") {
 
     SECTION("filling and emptying and size") {
         Point<T> p1, p2, p3, p4;
-        PointCloud<T> pointCloud1, pointCloud2;
+        PointCloud< Point<T> > pointCloud1, pointCloud2;
 
         pointCloud1.push_back(p1);
         pointCloud1.push_back(0.0, 0.0, 0.0);
@@ -383,7 +383,7 @@ TEST_CASE("PointCloud") {
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud<T> pointCloud;
+        PointCloud< Point<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -401,7 +401,7 @@ TEST_CASE("PointCloud") {
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud<T> pointCloud;
+        PointCloud< Point<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -430,7 +430,7 @@ TEST_CASE("PointCloud") {
             p5{4.0, 0.0, 0.0},
             centerShould{2.0, 0.0, 0.0};
 
-        PointCloud<T> pointCloud;
+        PointCloud< Point<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -448,14 +448,14 @@ TEST_CASE("PointCloud") {
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud<T> pointCloud1;
+        PointCloud< Point<T> > pointCloud1;
         pointCloud1 += p1;
         pointCloud1 += p2;
         pointCloud1 += p3;
         pointCloud1 += p4;
         pointCloud1 += p5;
 
-        PointCloud<T> pointCloud2 = pointCloud1;
+        PointCloud< Point<T> > pointCloud2 = pointCloud1;
 
         REQUIRE(pointCloud1.equal_to(pointCloud2));
         REQUIRE(pointCloud1 == pointCloud2);
@@ -488,14 +488,14 @@ TEST_CASE("PointCloud") {
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud<T> pointCloud1;
+        PointCloud< Point<T> > pointCloud1;
         pointCloud1 += p1;
         pointCloud1 += p2;
         pointCloud1 += p3;
         pointCloud1 += p4;
         pointCloud1 += p5;
 
-        PointCloud<T> pointCloud2;
+        PointCloud< Point<T> > pointCloud2;
         pointCloud2 += p2;
         pointCloud2 += p3;
 
@@ -513,7 +513,7 @@ TEST_CASE("PointCloud") {
         points.push_back(Point<T>{3.0, 0.0, 0.0});
         points.push_back(Point<T>{4.0, 0.0, 0.0});
 
-        PointCloud<T> pointCloud;
+        PointCloud< Point<T> > pointCloud;
 
         for(auto i : points)
             pointCloud += i;

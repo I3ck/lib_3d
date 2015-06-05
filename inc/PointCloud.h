@@ -15,10 +15,11 @@
 
 namespace lib_3d {
 
-template <typename T>
+template <class POINTTYPE>
 class PointCloud {
 private:
-    std::vector< Point<T> > points;
+    typedef typename POINTTYPE::value_type PRECISION;
+    std::vector<POINTTYPE> points;
 
 public:
 
@@ -75,13 +76,13 @@ public:
 
 //------------------------------------------------------------------------------
 
-    PointCloud& push_back(Point<T> point) {
+    PointCloud& push_back(POINTTYPE point) {
         points.push_back(point);
         return *this;
     }
 
-    PointCloud& push_back(T x, T y, T z) {
-        push_back(Point<T>{x, y, z});
+    PointCloud& push_back(PRECISION x, PRECISION y, PRECISION z) {
+        push_back(POINTTYPE{x, y, z});
         return *this;
     }
 
@@ -91,13 +92,13 @@ public:
         return *this;
     }
 
-    PointCloud& emplace_back(Point<T> point) {
+    PointCloud& emplace_back(POINTTYPE point) {
         points.emplace_back(point);
         return *this;
     }
 
-    PointCloud& emplace_back(T x, T y, T z) {
-        emplace_back(Point<T>{x, y, z});
+    PointCloud& emplace_back(PRECISION x, PRECISION y, PRECISION z) {
+        emplace_back(POINTTYPE{x, y, z});
         return *this;
     }
 
@@ -122,10 +123,10 @@ public:
 
 //------------------------------------------------------------------------------
 
-    T length() const {
+    PRECISION length() const {
         if(size() < 2)
             return 0;
-        T l(0);
+        PRECISION l(0);
 
         for(auto i = points.cbegin()+1; i != points.cend(); ++i)
             l += i->distance_to(*(i-1));
@@ -135,11 +136,11 @@ public:
 
 //------------------------------------------------------------------------------
 
-    Point<T> first() const {
+    POINTTYPE first() const {
         return points[0];
     }
 
-    Point<T> last() const {
+    POINTTYPE last() const {
         return points[size()-1];
     }
 
@@ -166,8 +167,8 @@ public:
 
 //------------------------------------------------------------------------------
 
-    Point<T> center() const {
-        T
+    POINTTYPE center() const {
+        PRECISION
             sumX(0.0),
             sumY(0.0),
             sumZ(0.0);
@@ -178,12 +179,12 @@ public:
             sumZ += i.z;
         }
 
-        return Point<T>{sumX / size(), sumY / size(), sumZ / size()};
+        return POINTTYPE{sumX / size(), sumY / size(), sumZ / size()};
     }
 
 //------------------------------------------------------------------------------
 
-    bool similar_to(const PointCloud &other, T maxDistance) const {
+    bool similar_to(const PointCloud &other, PRECISION maxDistance) const {
         if(size() != other.size())
             return false;
         for(unsigned int i = 0; i < size(); ++i) {
@@ -217,7 +218,7 @@ public:
         if(indexStart == 0 && indexEnd == size()-1)
             return *this;
 
-        PointCloud<T> tmp;
+        PointCloud<POINTTYPE> tmp;
 
         for(unsigned int i = indexStart; i <= indexEnd; ++i) {
             tmp += (*this)[i];
@@ -229,27 +230,27 @@ public:
 
 //------------------------------------------------------------------------------
 
-    typename std::vector <Point<T> >::iterator begin() {
+    typename std::vector <POINTTYPE >::iterator begin() {
         return points.begin();
     }
 
-    typename std::vector <Point<T> >::iterator end() {
+    typename std::vector <POINTTYPE >::iterator end() {
         return points.end();
     }
 
-    typename std::vector <Point<T> >::const_iterator cbegin() const {
+    typename std::vector <POINTTYPE >::const_iterator cbegin() const {
         return points.cbegin();
     }
 
-    typename std::vector <Point<T> >::const_iterator cend() const {
+    typename std::vector <POINTTYPE >::const_iterator cend() const {
         return points.cend();
     }
 
-    typename std::vector <Point<T> >::reverse_iterator rbegin() {
+    typename std::vector <POINTTYPE >::reverse_iterator rbegin() {
         return points.rbegin();
     }
 
-    typename std::vector <Point<T> >::reverse_iterator rend() {
+    typename std::vector <POINTTYPE >::reverse_iterator rend() {
         return points.rend();
     }
 
@@ -263,37 +264,37 @@ public:
         return !equal_to(other);
     }
 
-    PointCloud<T>& operator += (const PointCloud<T> &other) {
+    PointCloud<POINTTYPE>& operator += (const PointCloud<POINTTYPE> &other) {
         push_back(other);
         return *this;
     }
 
-    PointCloud<T>& operator += (Point<T> other) {
+    PointCloud<POINTTYPE>& operator += (POINTTYPE other) {
         push_back(other);
         return *this;
     }
 
-    PointCloud<T> operator + (const PointCloud<T> &other) const {
+    PointCloud<POINTTYPE> operator + (const PointCloud<POINTTYPE> &other) const {
         auto out = *this;
         out.push_back(other);
         return out;
     }
 
-    PointCloud<T> operator + (Point<T> other) const {
+    PointCloud<POINTTYPE> operator + (POINTTYPE other) const {
         auto out = *this;
         out.push_back(other);
         return out;
     }
 
-    Point<T> operator [] (unsigned int i) const {
+    POINTTYPE operator [] (unsigned int i) const {
         return points[i];
     }
 
-    Point<T>& operator [] (unsigned int i) {
+    POINTTYPE& operator [] (unsigned int i) {
         return points[i];
     }
 
-    operator std::vector < Point <T> > () const {
+    operator std::vector < Point <PRECISION> > () const {
         return points;
     }
 
@@ -304,8 +305,8 @@ public:
         return os;
     }
 
-    inline PointCloud<T> operator * (const Matrix<T> &m) const {
-        PointCloud<T> out;
+    inline PointCloud<POINTTYPE> operator * (const Matrix<PRECISION> &m) const {
+        PointCloud<POINTTYPE> out;
         for(const auto& point : points)
             out.points.push_back( point * m ); ///@todo use "add or proper method once implemented"
         return out;

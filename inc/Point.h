@@ -16,7 +16,11 @@ namespace lib_3d {
 
 template <typename T>
 class Point : public PointVec<T> {
+
+
 public:
+
+    typedef T value_type;
 
     Point(T x=0.0, T y=0.0, T z=0.0) :
         PointVec<T>(x, y, z)
