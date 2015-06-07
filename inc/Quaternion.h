@@ -54,8 +54,53 @@ public:
 
 //------------------------------------------------------------------------------
 
-    Quaternion<T> dot(Quaternion<T> &other) const {
-        return 0.5 * (*this) * conjugation(other) + other * conjugation(*this);
+    T real() const {
+        return x0;
+    }
+
+//------------------------------------------------------------------------------
+
+    T norm() const {
+        return this->dot(*this);
+    }
+
+//------------------------------------------------------------------------------
+
+    T abs() const {
+        return sqrt(norm());
+    }
+
+//------------------------------------------------------------------------------ 
+
+    Quaternion<T> unit() const {
+        Quaternion<T> out = *this;
+        T norm = norm();
+        
+        out.x0 /= norm;
+        out.x1 /= norm;
+        out.x2 /= norm;
+        out.x3 /= norm;
+
+        return out;
+    }
+
+    ///@todo find proper name
+    void unify() const {
+        Quaternion<T> tmp = this->unit;
+        *this = tmp;
+    }
+
+//------------------------------------------------------------------------------
+
+
+    T dot(Quaternion<T> &other) const {
+        return real(  (*this)*conjugation(other)  );
+    }
+
+//------------------------------------------------------------------------------
+
+    Quaternion<T> cross(Quaternion<T> &other) const {
+        return 0.5 * ((*this) * other - other * (*this));
     }
 
 //------------------------------------------------------------------------------
