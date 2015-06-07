@@ -17,5 +17,6 @@
 #include "inc/Quaternion.h"
 #include "inc/Matrix.h"
 #include "inc/MatrixFactory.h"
+#include "inc/MatrixPipe.h"
 
 #endif // LIB_3D_H_INCLUDED

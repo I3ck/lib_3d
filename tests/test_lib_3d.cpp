@@ -528,4 +528,52 @@ TEST_CASE("PointCloud") {
     }
 }
 
+TEST_CASE("Matrix Pipe") {
+
+    ///@todo look at currently not implemented, add to test once this happened
+    SECTION("First test") {
+        T
+            scale(10.0),
+            degX(11.0),
+            degY(3.0),
+            degZ(1.0),
+            moveX(50.0),
+            moveY(41.3),
+            moveZ(7.9),
+            camDegX(3.3),
+            camDegY(1.9),
+            camDegZ(1.3),
+            camMoveX(1.3),
+            camMoveY(16.4),
+            camMoveZ(3.33),
+            width(1000.0),
+            height(500.0),
+            close(1.0),
+            away(100.0),
+            fovDeg(90.0);
+
+        Matrix<T>
+            matrixTranslation = MatrixFactory<T>::translation(moveX, moveY, moveZ),
+            matrixRotation = MatrixFactory<T>::rotation(degX, degY, degZ),
+            matrixScale = MatrixFactory<T>::scaling(scale),
+            matrixPerspective = MatrixFactory<T>::perspective(width, height, close, away, fovDeg),
+            matrixCameraTranslation = MatrixFactory<T>::translation(-camMoveX, -camMoveY, -camMoveZ),
+            matrixResult;
+            //matrixCameraLook = MatrixFactory<T>::MISSING
+
+        matrixResult = matrixPerspective * matrixCameraTranslation *
+                       matrixTranslation * matrixRotation * matrixScale;
+
+        MatrixPipe<T> pipe;
+
+        pipe.add_translation(moveX, moveY, moveZ);
+        pipe.add_rotation(degX, degY, degZ);
+        pipe.add_scale(scale);
+        pipe.add_perspective(width, height, close, away, fovDeg);
+        pipe.add_camera_translation(camMoveX, camMoveY, camMoveZ);
+
+        REQUIRE(pipe.result() == matrixResult);
+    }
+}
+
 ///@todo test Quaternion
