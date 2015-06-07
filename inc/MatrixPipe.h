@@ -23,7 +23,7 @@ private:
         matrixRotation,
         matrixScale,
         matrixPerspective,
-        matrixCameraRotation,
+        matrixCameraTranslation,
         matrixCameraLook;
 
 public:
@@ -33,7 +33,7 @@ public:
         = matrixRotation
         = matrixScale
         = matrixPerspective
-        = matrixCameraRotation
+        = matrixCameraTranslation
         = matrixCameraLook
         = MatrixFactory<T>::unity();
     }
@@ -89,11 +89,11 @@ public:
 //------------------------------------------------------------------------------
 
     void add_camera_translation(T x, T y, T z) {
-        matrixCameraRotation = MatrixFactory<T>::translation(-x, -y, -z);
+        matrixCameraTranslation = MatrixFactory<T>::translation(-x, -y, -z);
     }
 
     void remove_camera_translation() {
-        matrixCameraRotation = MatrixFactory<T>::unity();
+        matrixCameraTranslation = MatrixFactory<T>::unity();
     }
 
 //------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ public:
 //------------------------------------------------------------------------------
 
     Matrix<T> result() const {
-        return matrixPerspective * matrixCameraLook * matrixCameraRotation * 
+        return matrixPerspective * matrixCameraLook * matrixCameraTranslation *
                matrixTranslation * matrixRotation * matrixScale;
     }
 };

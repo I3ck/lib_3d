@@ -566,6 +566,8 @@ TEST_CASE("Matrix Pipe") {
 
         MatrixPipe<T> pipe;
 
+        REQUIRE(pipe.result() == MatrixFactory<T>::unity());
+
         pipe.add_translation(moveX, moveY, moveZ);
         pipe.add_rotation(degX, degY, degZ);
         pipe.add_scale(scale);
@@ -573,6 +575,14 @@ TEST_CASE("Matrix Pipe") {
         pipe.add_camera_translation(camMoveX, camMoveY, camMoveZ);
 
         REQUIRE(pipe.result() == matrixResult);
+
+        pipe.remove_translation();
+        pipe.remove_rotation();
+        pipe.remove_scale();
+        pipe.remove_perspective();
+        pipe.remove_camera_translation();
+        
+        REQUIRE(pipe.result() == MatrixFactory<T>::unity());
     }
 }
 
