@@ -93,6 +93,27 @@ TEST_CASE("testing point") {
 
         REQUIRE(center.similar_to(centerShould, MAX_DELTA));
     }
+
+    SECTION("testing operator overloads") {
+        Point<T>
+            p2{1.0, 2.0, 3.0},
+            p3,
+            p4;
+
+        Vec<T> vec1{10.0, 11.0, 12.0};
+
+        p3 = p2;
+        p3.move_by(10.0, 11.0, 12.0);
+        p4 = p2 + vec1;
+
+        REQUIRE(p3 == p4);
+
+        p3.move_by(10.0, 11.0, 12.0);
+
+        p4 += vec1;
+
+        REQUIRE(p3 == p4);
+    }
 }
 
 TEST_CASE("testing Matrix") {
@@ -244,6 +265,10 @@ TEST_CASE("Matrix*Point") {
         Point<T> p3{2.0, 2.1, 3.3};
 
         REQUIRE(p2.similar_to(p3, MAX_DELTA));
+
+        p *= m;
+
+        REQUIRE(p.similar_to(p2, MAX_DELTA));
     }
 
     SECTION("Rotate point with Matrix") {

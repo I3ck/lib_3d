@@ -75,6 +75,11 @@ public:
         }
         return out;
     }
+
+    inline Vec<T>& operator * (const Matrix<T> &m) {
+        *this = *this * m;
+        return *this;
+    }
 };
 
 } // namespace lib_3d

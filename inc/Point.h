@@ -55,6 +55,11 @@ public:
                         this->z + vec.z};
     }
 
+    inline Point<T>& operator += (const Vec<T> &vec) {
+        *this = *this + vec;
+        return *this;
+    }
+
     inline Point<T> operator * (const Matrix<T> &m) const {
         Point<T> out;
         for(size_t i = 0; i < 4; ++i) {
@@ -64,6 +69,12 @@ public:
         }
         return out;
     }
+
+    inline Point<T>& operator *= (const Matrix<T> &m) {
+        *this = *this * m;
+        return *this;
+    }
+
 };
 
 } // namespace lib_3d

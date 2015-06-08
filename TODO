@@ -20,8 +20,6 @@ Classes
 
     class Facet containing of 3 points and a normal?
 
-    overload *= etc. aswell, especially for matrix
-
     use worker threads when working on a lot of data
 
     make pointcloud data a kde tree?
