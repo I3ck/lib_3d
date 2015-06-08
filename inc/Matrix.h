@@ -63,6 +63,11 @@ public:
         return out;
     }
 
+    inline Matrix<T>& operator *= (const Matrix<T> &other) {
+        *this = *this * other;
+        return *this;
+    }
+
     inline Matrix<T> operator * (T other) const {
         Matrix<T> out;
         for(size_t i = 0; i < 4; ++i) {
@@ -71,6 +76,11 @@ public:
             }
         }
         return out;
+    }
+
+    inline Matrix<T>& operator *= (T other) {
+        *this = *this * other;
+        return *this;
     }
 
     inline friend Matrix<T> operator * (T other, Matrix<T> matrix) {

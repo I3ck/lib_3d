@@ -29,3 +29,6 @@ Classes
     currently using * as scalar product for point, but not for quaternion
 
     test for quaternion missing, also usage for rotation not implemented yet (main reason for adding them)
+
+
+    proper method chaining by returning references instead of void

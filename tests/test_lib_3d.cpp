@@ -158,6 +158,17 @@ TEST_CASE("testing Matrix") {
         m3 = 4.0 * m2;
 
         REQUIRE(m3 == m4);
+
+        m4 = m3;
+        m3 = m2 * m3;
+        m4 *= m2;
+
+        REQUIRE(m3 == m4);
+
+        m3 = m3 * 2.0;
+        m4 *= 2.0;
+
+        REQUIRE(m3 == m4);
     }
 }
 
@@ -581,7 +592,7 @@ TEST_CASE("Matrix Pipe") {
         pipe.remove_scale();
         pipe.remove_perspective();
         pipe.remove_camera_translation();
-        
+
         REQUIRE(pipe.result() == MatrixFactory<T>::unity());
     }
 }
