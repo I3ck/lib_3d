@@ -67,11 +67,10 @@ public:
 //------------------------------------------------------------------------------
 
     inline Vec<T> operator * (const Matrix<T> &m) const {
-        Vec<T> copy = *this;
         Vec<T> out;
         for(size_t i = 0; i < 4; ++i) {
             for(size_t j =0; j < 4; ++j) {
-                out[i] += m.m[i][j] * copy[j];
+                out[i] += m.m[i][j] * (*this)[j];
             }
         }
         return out;
