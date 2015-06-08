@@ -2,13 +2,7 @@ Classes
     PointCloud (has many points)
     Path (same as Point Cloud but with defined order)
 
-    MatrixFactory (Creates Matrixes for transformation, rotation etc.) [can also be done withoout a class, or Matrix constructors or similar]
-
-    MatrixPipe which generates a result matrix depending on the input matrices
-
     Mesh (similar to path, but each point being connected to more than one)
-
-    Quanterions
 
     still use Points? Differ between Vectors and Points? Or just make both the same?
 
