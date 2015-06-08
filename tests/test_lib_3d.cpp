@@ -622,4 +622,16 @@ TEST_CASE("Matrix Pipe") {
     }
 }
 
+TEST_CASE("testing mesh") {
+
+    SECTION("construction") {
+        ///@todo
+    }
+
+    SECTION("loading ascii") {
+        Mesh< Point<T> > mesh;
+        mesh.load_stl("tests/stlAscii.stl");
+    }
+}
+
 ///@todo test Quaternion
