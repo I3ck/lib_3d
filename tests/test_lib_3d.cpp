@@ -635,6 +635,21 @@ TEST_CASE("testing mesh") {
         REQUIRE(mesh.number_points() == 36);
 
         REQUIRE(mesh.number_facets() == 12);
+
+        Point<T> data[0];
+
+        mesh.get_points();
+    }
+
+    SECTION("getting points and facets or ids") {
+        Mesh< Point<T> > mesh;
+        mesh.load_stl("tests/stlAscii.stl");
+
+        REQUIRE(mesh.get_points().size() == 36);
+
+        REQUIRE(mesh.get_facets().size() == 12);
+
+        REQUIRE(mesh.get_ids().size() == 36);
     }
 }
 

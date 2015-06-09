@@ -56,6 +56,30 @@ public:
 
 //------------------------------------------------------------------------------
 
+    std::vector<POINTTYPE> get_points() const {
+        return this->points;
+    }
+
+//------------------------------------------------------------------------------
+
+    std::vector< Facet > get_facets() const {
+        return facets;
+    }
+
+    std::vector<size_t> get_ids() const {
+        std::vector<size_t> ids;
+
+        for(const auto& i : facets) {
+            ids.push_back(i.a);
+            ids.push_back(i.b);
+            ids.push_back(i.c);
+        }
+
+        return ids;
+    }
+
+//------------------------------------------------------------------------------
+
     ///@todo either trim all whitespace at beginning of line or only check for contains instead of begins with
     ///@todo throw away facet normal data
     ///@todo each loop, create 3 facets, fill them with data and only then append to data
