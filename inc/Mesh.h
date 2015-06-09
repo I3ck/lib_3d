@@ -56,12 +56,6 @@ public:
 
 //------------------------------------------------------------------------------
 
-    std::vector<POINTTYPE> get_points() const {
-        return this->points;
-    }
-
-//------------------------------------------------------------------------------
-
     std::vector< Facet > get_facets() const {
         return facets;
     }
