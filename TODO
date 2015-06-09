@@ -26,3 +26,7 @@ Classes
     proper method chaining by returning references instead of void
 
     add a "saveable" interface which has a save / load method with binary or not and is pure virtual?
+
+    add reset() or clear() method to all container classes
+
+    rename size() to number_points() in PointVec

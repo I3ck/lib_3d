@@ -631,6 +631,10 @@ TEST_CASE("testing mesh") {
     SECTION("loading ascii") {
         Mesh< Point<T> > mesh;
         mesh.load_stl("tests/stlAscii.stl");
+
+        REQUIRE(mesh.number_points() == 36);
+
+        REQUIRE(mesh.number_facets() == 12);
     }
 }
 

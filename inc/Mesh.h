@@ -46,53 +46,117 @@ public:
 
 //------------------------------------------------------------------------------
 
+    size_t number_points() const {
+        return this->points.size();
+    }
+
+    size_t number_facets() const {
+        return facets.size();
+    }
+
+//------------------------------------------------------------------------------
+
     ///@todo either trim all whitespace at beginning of line or only check for contains instead of begins with
     ///@todo throw away facet normal data
     ///@todo each loop, create 3 facets, fill them with data and only then append to data
     ///@todo reset all containers before loading (or add a boolean to check this)
+    ///@todo check for error cases (file not opened, no lines, never reached endloop, no facets or points read ...)
 
     bool load_stl(std::string path, bool binary = false) {
+        facets.clear();
+        this->points.clear();
+
         if(binary) {
             ///@todo
         }
         else {
-            std::string line;
-            std::string identifier;
+            bool
+                inFacet(false),
+                inLoop(false);
+
+            std::string
+                line,
+                identifier,
+                name("");
+
             std::ifstream in(path.c_str());
+
+            size_t numberTmpPoints(0);
+
+            Point<T> pA, pB, pC;
+
             while(std::getline(in,line)) {
                 std::stringstream ssLine(line);
+
                 ssLine >> identifier;
+
                 if(identifier == "solid") {
-                    std::string name("");
                     std::getline(ssLine, name);
-                    std::cout << "SOLID" << name << std::endl;
                 }
 
                 else if(identifier == "facet normal") {
-                    std::cout << "FACET NORMAL" << std::endl;
+                    inFacet = true;
                 }
 
                 else if(identifier == "outer loop") {
-                    std::cout << "OUTER LOOP" << std::endl;
+                    if(inFacet)
+                        inLoop = true;
                 }
 
                 else if(identifier == "vertex") {
-                    std::cout << "VERTEX" << std::endl;
+                    if(inLoop) {
+                        T a, b, c;
+
+                        ssLine >> a;
+                        ssLine >> b;
+                        ssLine >> c;
+
+                        switch (numberTmpPoints) {
+                            case 0:
+                                pA = Point<T>(a, b, c);
+                                break;
+                            case 1:
+                                pB = Point<T>(a, b, c);
+                                break;
+                            case 2:
+                                pC = Point<T>(a, b, c);
+                                break;
+                        }
+                        ++numberTmpPoints;
+                    }
                 }
 
                 else if(identifier == "endloop") {
-                    std::cout << "END LOOP" << std::endl;
+                    size_t idA, idB, idC;
+
+                    this->points.push_back(pA);
+                    idA = this->points.size() - 1;
+
+                    this->points.push_back(pB);
+                    idB = this->points.size() - 1;
+
+                    this->points.push_back(pC);
+                    idC = this->points.size() - 1;
+
+                    Facet facet(idA, idB, idC);
+
+                    facets.push_back(facet);
+
+                    numberTmpPoints = 0;
+                    inLoop = false;
                 }
 
                 else if(identifier == "endfacet") {
-                    std::cout << "END FACET" << std::endl;
+                    inFacet = false;
                 }
 
                 else if(identifier == "endsolid") {
-                    std::cout << "END SOLID" << std::endl;
+                    //currently doing nothing
                 }
             }
         }
+
+        return true;
     }
 
     bool save_stl(std::string path, bool binary = false) {

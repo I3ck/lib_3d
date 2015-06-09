@@ -19,6 +19,8 @@ template <typename POINTTYPE>
 class PointCloud {
 private:
     typedef typename POINTTYPE::value_type T;
+
+protected:
     std::vector<POINTTYPE> points;
 
 public:
