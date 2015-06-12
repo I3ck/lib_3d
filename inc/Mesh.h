@@ -181,11 +181,14 @@ public:
     }
 
     bool save_stl(std::string path, bool binary = false, std::string name = "generated with lib_3d") {
+        const int PRECISION(6);
         if(binary) {
             ///@todo
         }
         else {
           std::ofstream out(path.c_str());
+          out << std::setprecision(PRECISION) << std::showpoint << std::fixed;
+
           out << "solid " << name << std::endl;
           for(auto facet : facets) {
             Point<T> *pA, *pB, *pC;
@@ -206,7 +209,9 @@ public:
             out << "endloop" << std::endl;
             out << "endfacet" << std::endl;
           }
+
           out << "endsolid " << name << std::endl;
+
           out.close();
         }
     }
