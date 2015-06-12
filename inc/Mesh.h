@@ -16,6 +16,7 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <cstdint>
 
 namespace lib_3d {
 
@@ -181,11 +182,67 @@ public:
     }
 
     bool save_stl(std::string path, bool binary = false, std::string name = "generated with lib_3d") {
-        const int PRECISION(6);
         if(binary) {
-            ///@todo
+            ///@todo not working yet
+            ///@todo trim name if longer than 80 chars
+            //make name at least 80 chars long
+            std::string spaces(name.size(), ' ' );
+            name += spaces;
+
+            uint8_t header[] = "lib_3d binary format                                                             ";
+            std::copy(name.begin(), name.end(), header);
+            uint32_t nFacets = (uint32_t) facets.size();
+
+            std::ofstream out(path.c_str(), std::ofstream::binary);
+
+            out.write((char*)&header, sizeof(header));
+            out.write((char*)&nFacets, sizeof(nFacets));
+
+            for(auto facet : facets) {
+              Point<T> *pA, *pB, *pC;
+
+              pA = &(this->points[facet.a]);
+              pB = &(this->points[facet.b]);
+              pC = &(this->points[facet.c]);
+
+              Vec<T> vAb = *pA - *pB;
+              Vec<T> vBc = *pB - *pC;
+              Vec<T> normale = vAb.cross(vBc).normalize();
+
+              struct FacetData {
+
+                float normal[3];
+                float p1[3];
+                float p2[3];
+                float p3[3];
+                uint16_t attributes;
+              } facetData;
+
+              facetData.normal[0] = (float)normale.x;
+              facetData.normal[1] = (float)normale.y;
+              facetData.normal[2] = (float)normale.z;
+
+              facetData.p1[0] = (float)pA->x;
+              facetData.p1[1] = (float)pA->y;
+              facetData.p1[2] = (float)pA->z;
+
+              facetData.p2[0] = (float)pB->x;
+              facetData.p2[1] = (float)pB->y;
+              facetData.p2[2] = (float)pB->z;
+
+              facetData.p3[0] = (float)pC->x;
+              facetData.p3[1] = (float)pC->y;
+              facetData.p3[2] = (float)pC->z;
+
+              facetData.attributes = 0;
+
+
+              out.write((char*)&facetData, sizeof(facetData));
+            }
+            out.close();
         }
         else {
+          const int PRECISION(6);
           std::ofstream out(path.c_str());
           out << std::setprecision(PRECISION) << std::showpoint << std::fixed;
 
