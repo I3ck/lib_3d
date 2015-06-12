@@ -185,7 +185,6 @@ public:
             ///@todo
         }
         else {
-          ///@todo normals have to be calculated
           std::ofstream out(path.c_str());
           out << "solid " << name << std::endl;
           for(auto facet : facets) {
@@ -195,7 +194,11 @@ public:
             pB = &(this->points[facet.b]);
             pC = &(this->points[facet.c]);
 
-            out << "facet normal" << std::endl;
+            Vec<T> vAb = *pA - *pB;
+            Vec<T> vBc = *pB - *pC;
+            Vec<T> normale = vAb.cross(vBc).normalize();
+
+            out << "facet normal " << normale.x << " " << normale.y << " " << normale.z << std::endl;
             out << "outer loop" << std::endl;
             out << "vertex " << pA->x << " " << pA->y << " " << pA->z << std::endl;
             out << "vertex " << pB->x << " " << pB->y << " " << pB->z << std::endl;
