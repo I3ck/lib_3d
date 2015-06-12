@@ -95,6 +95,7 @@ public:
             std::string
                 line,
                 identifier,
+                garbage,
                 name("");
 
             std::ifstream in(path.c_str());
@@ -112,11 +113,13 @@ public:
                     std::getline(ssLine, name);
                 }
 
-                else if(identifier == "facet normal") {
+                else if(identifier == "facet") {
                     inFacet = true;
+                    ssLine >> garbage; //to drop "normal" from "facet normal"
+                    ///@todo later add facet information here
                 }
 
-                else if(identifier == "outer loop") {
+                else if(identifier == "outer") {
                     if(inFacet)
                         inLoop = true;
                 }
@@ -177,12 +180,31 @@ public:
         return true;
     }
 
-    bool save_stl(std::string path, bool binary = false) {
+    bool save_stl(std::string path, bool binary = false, std::string name = "generated with lib_3d") {
         if(binary) {
             ///@todo
         }
         else {
-            ///@todo
+          ///@todo normals have to be calculated
+          std::ofstream out(path.c_str());
+          out << "solid " << name << std::endl;
+          for(auto facet : facets) {
+            Point<T> *pA, *pB, *pC;
+
+            pA = &(this->points[facet.a]);
+            pB = &(this->points[facet.b]);
+            pC = &(this->points[facet.c]);
+
+            out << "facet normal" << std::endl;
+            out << "outer loop" << std::endl;
+            out << "vertex " << pA->x << " " << pA->y << " " << pA->z << std::endl;
+            out << "vertex " << pB->x << " " << pB->y << " " << pB->z << std::endl;
+            out << "vertex " << pC->x << " " << pC->y << " " << pC->z << std::endl;
+            out << "endloop" << std::endl;
+            out << "endfacet" << std::endl;
+          }
+          out << "endsolid " << name << std::endl;
+          out.close();
         }
     }
 };

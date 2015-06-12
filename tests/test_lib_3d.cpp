@@ -628,17 +628,20 @@ TEST_CASE("testing mesh") {
         ///@todo
     }
 
-    SECTION("loading ascii") {
-        Mesh< Point<T> > mesh;
+    SECTION("loading and saving ascii") {
+        Mesh< Point<T> > mesh, mesh2;
         mesh.load_stl("tests/stlAscii.stl");
 
         REQUIRE(mesh.number_points() == 36);
 
         REQUIRE(mesh.number_facets() == 12);
 
-        Point<T> data[0];
+        mesh.save_stl("tests/test_stl_io.stl.tmp");
 
-        mesh.get_points();
+        mesh2.load_stl("tests/test_stl_io.stl.tmp");
+
+        REQUIRE(mesh.number_points() == mesh2.number_points());
+        REQUIRE(mesh2.number_facets() == mesh2.number_facets());
     }
 
     SECTION("getting points and facets or ids") {
