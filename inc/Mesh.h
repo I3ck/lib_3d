@@ -20,6 +20,18 @@
 
 namespace lib_3d {
 
+///@todo move to external file
+struct FacetData {
+
+  float normal[3];
+  float p1[3];
+  float p2[3];
+  float p3[3];
+  uint16_t attributes;
+} facetData;
+
+
+
 template <typename POINTTYPE>
 class Mesh : public PointCloud<POINTTYPE>{
 private:
@@ -189,12 +201,12 @@ public:
             std::string spaces(name.size(), ' ' );
             name += spaces;
 
-            uint8_t header[] = "lib_3d binary format                                                             ";
-            std::copy(name.begin(), name.end(), header);
+            //header has to be of size UINT8[80]
+            //so leave this string at 79 characters (\0 char at end of it makes it size 80)
+            uint8_t header[] = "lib_3d binary format                                                          a";
             uint32_t nFacets = (uint32_t) facets.size();
 
             std::ofstream out(path.c_str(), std::ofstream::binary);
-
             out.write((char*)&header, sizeof(header));
             out.write((char*)&nFacets, sizeof(nFacets));
 
@@ -209,14 +221,7 @@ public:
               Vec<T> vBc = *pB - *pC;
               Vec<T> normale = vAb.cross(vBc).normalize();
 
-              struct FacetData {
-
-                float normal[3];
-                float p1[3];
-                float p2[3];
-                float p3[3];
-                uint16_t attributes;
-              } facetData;
+              FacetData facetData;
 
               facetData.normal[0] = (float)normale.x;
               facetData.normal[1] = (float)normale.y;
