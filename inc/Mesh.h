@@ -20,17 +20,6 @@
 
 namespace lib_3d {
 
-///@todo move to external file
-struct FacetData {
-
-  float normal[3];
-  float p1[3];
-  float p2[3];
-  float p3[3];
-  uint16_t attributes;
-} facetData;
-
-
 
 template <typename POINTTYPE>
 class Mesh : public PointCloud<POINTTYPE>{
@@ -221,28 +210,22 @@ public:
               Vec<T> vBc = *pB - *pC;
               Vec<T> normale = vAb.cross(vBc).normalize();
 
-              FacetData facetData;
+              float facetData[12];
 
-              facetData.normal[0] = (float)normale.x;
-              facetData.normal[1] = (float)normale.y;
-              facetData.normal[2] = (float)normale.z;
+              facetData[0] = (float)(normale.x); facetData[1] = (float)(normale.y); facetData[2] = (float)(normale.z);
 
-              facetData.p1[0] = (float)pA->x;
-              facetData.p1[1] = (float)pA->y;
-              facetData.p1[2] = (float)pA->z;
 
-              facetData.p2[0] = (float)pB->x;
-              facetData.p2[1] = (float)pB->y;
-              facetData.p2[2] = (float)pB->z;
+              facetData[3] = (float)(pA->x); facetData[4] = (float)(pA->y); facetData[5] = (float)(pA->z);
 
-              facetData.p3[0] = (float)pC->x;
-              facetData.p3[1] = (float)pC->y;
-              facetData.p3[2] = (float)pC->z;
+              facetData[6] = (float)(pB->x); facetData[7] = (float)(pB->y); facetData[8] = (float)(pB->z);
 
-              facetData.attributes = 0;
+              facetData[9] = (float)(pC->x); facetData[10] = (float)(pC->y); facetData[11] = (float)(pC->z);
 
+              uint16_t attributes = 0;
 
               out.write((char*)&facetData, sizeof(facetData));
+
+              out.write((char*)&attributes, sizeof(attributes));
             }
             out.close();
         }
