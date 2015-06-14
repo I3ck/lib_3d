@@ -12,6 +12,8 @@
 #include "Point.h"
 
 #include <vector>
+#include <fstream>
+#include <algorithm>
 
 namespace lib_3d {
 

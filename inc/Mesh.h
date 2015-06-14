@@ -17,6 +17,7 @@
 #include <sstream>
 #include <fstream>
 #include <cstdint>
+#include <iomanip>
 
 namespace lib_3d {
 
