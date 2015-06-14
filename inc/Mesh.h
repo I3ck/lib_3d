@@ -89,6 +89,7 @@ public:
 
               uint8_t header[80];
               uint32_t nFacets = (uint32_t) facets.size();
+              uint16_t attributes;
 
               in.read((char*)&header, sizeof(header));
               in.read((char*)&nFacets, sizeof(nFacets));
@@ -119,6 +120,9 @@ public:
                 Facet facet(idA, idB, idC);
 
                 facets.push_back(facet);
+
+                //read the 0 char
+                in.read((char*)&attributes, sizeof(attributes));
               }
 
               in.close();
@@ -275,7 +279,7 @@ public:
         }
         else {
           const int PRECISION(6);
-          
+
           std::ofstream out(path.c_str());
           if(!out)
             return false;
@@ -308,6 +312,22 @@ public:
           out.close();
         }
     }
+
+//------------------------------------------------------------------------------
+
+    inline Mesh<POINTTYPE> operator * (const Matrix<T> &m) const {
+        Mesh<POINTTYPE> copy = *this;
+        for(auto& point : copy.points)
+            point *= m;
+        return copy;
+    }
+
+    inline Mesh<POINTTYPE> operator *= (const Matrix<T> &m) {
+        for(auto& point : this->points)
+            point *= m;
+        return *this;
+    }
+
 };
 
 } // namespace lib_3d
