@@ -34,3 +34,5 @@ Classes
     name parameter ignored when writing binary stl
 
     add equality checks to containers for easier unit testing
+
+    add cache to matrix pipe

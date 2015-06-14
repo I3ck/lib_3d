@@ -49,10 +49,6 @@ public:
 
 //------------------------------------------------------------------------------
 
-    size_t number_points() const {
-        return this->points.size();
-    }
-
     size_t number_facets() const {
         return facets.size();
     }
