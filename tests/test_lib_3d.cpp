@@ -636,9 +636,25 @@ TEST_CASE("testing mesh") {
 
         REQUIRE(mesh.number_facets() == 12);
 
-        mesh.save_stl("tests/test_stl_io.stl.tmp");
+        mesh.save_stl("tests/test_stl_io_ascii.stl.tmp");
 
-        mesh2.load_stl("tests/test_stl_io.stl.tmp");
+        mesh2.load_stl("tests/test_stl_io_ascii.stl.tmp");
+
+        REQUIRE(mesh.number_points() == mesh2.number_points());
+        REQUIRE(mesh2.number_facets() == mesh2.number_facets());
+    }
+
+    SECTION("loading and saving binary") {
+        Mesh< Point<T> > mesh, mesh2;
+        mesh.load_stl("tests/stlBinary.stl", true);
+
+        REQUIRE(mesh.number_points() == 36);
+
+        REQUIRE(mesh.number_facets() == 12);
+
+        mesh.save_stl("tests/test_stl_io_binary.stl.tmp", true);
+
+        mesh2.load_stl("tests/test_stl_io_binary.stl.tmp", true);
 
         REQUIRE(mesh.number_points() == mesh2.number_points());
         REQUIRE(mesh2.number_facets() == mesh2.number_facets());

@@ -87,7 +87,45 @@ public:
         this->points.clear();
 
         if(binary) {
-            ///@todo
+            std::ifstream in(path.c_str(), std::ifstream::binary);
+            ///@todo check for filesize etc.
+
+
+            uint8_t header[80];
+            uint32_t nFacets = (uint32_t) facets.size();
+
+            in.read((char*)&header, sizeof(header));
+            in.read((char*)&nFacets, sizeof(nFacets));
+
+            for(unsigned int i = 0; i < nFacets; ++i) {
+              Point<T> pTmp;
+              size_t idA, idB, idC;
+
+              float tmpPoint[3];
+
+              //first point is normale, which is unused
+              in.read((char*)&tmpPoint, sizeof(tmpPoint));
+
+              //now read the remaining 3 points
+              for(unsigned int j = 0; j < 3; ++j) {
+                in.read((char*)&tmpPoint, sizeof(tmpPoint));
+                pTmp.x = (T)tmpPoint[0];
+                pTmp.y = (T)tmpPoint[1];
+                pTmp.z = (T)tmpPoint[2];
+
+                this->points.push_back(pTmp);
+              }
+
+              idA = this->points.size() - 3;
+              idB = this->points.size() - 2;
+              idC = this->points.size() - 1;
+
+              Facet facet(idA, idB, idC);
+
+              facets.push_back(facet);
+            }
+            
+            in.close();
         }
         else {
             bool
