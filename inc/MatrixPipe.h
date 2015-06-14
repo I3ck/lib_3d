@@ -98,8 +98,8 @@ public:
 
 //------------------------------------------------------------------------------
 
-    void add_camera_look() {
-        ///@todo missing in factory
+    void add_camera_look(const Vec<T> &target, const Vec<T> &up) {
+        matrixCameraLook = MatrixFactory<T>::look_at(target, up);
     }
 
     void remove_camera_look() {
