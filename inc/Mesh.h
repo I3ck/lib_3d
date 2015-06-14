@@ -124,7 +124,7 @@ public:
 
               facets.push_back(facet);
             }
-            
+
             in.close();
         }
         else {
@@ -222,9 +222,8 @@ public:
 
     bool save_stl(std::string path, bool binary = false, std::string name = "generated with lib_3d") {
         if(binary) {
-            ///@todo not working yet
-            ///@todo trim name if longer than 80 chars
             //make name at least 80 chars long
+            //@todo name parameter currently ignored
             std::string spaces(name.size(), ' ' );
             name += spaces;
 

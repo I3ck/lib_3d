@@ -30,3 +30,7 @@ Classes
     add reset() or clear() method to all container classes
 
     rename size() to number_points() in PointVec
+
+    name parameter ignored when writing binary stl
+
+    add equality checks to containers for easier unit testing
