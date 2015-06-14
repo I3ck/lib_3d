@@ -76,148 +76,152 @@ public:
 
 //------------------------------------------------------------------------------
 
-    ///@todo either trim all whitespace at beginning of line or only check for contains instead of begins with
-    ///@todo throw away facet normal data
-    ///@todo each loop, create 3 facets, fill them with data and only then append to data
-    ///@todo reset all containers before loading (or add a boolean to check this)
-    ///@todo check for error cases (file not opened, no lines, never reached endloop, no facets or points read ...)
-
     bool load_stl(std::string path, bool binary = false) {
         facets.clear();
         this->points.clear();
 
-        if(binary) {
-            std::ifstream in(path.c_str(), std::ifstream::binary);
-            ///@todo check for filesize etc.
+        try {
+
+          if(binary) {
+              std::ifstream in(path.c_str(), std::ifstream::binary);
+              ///@todo check for filesize etc.
 
 
-            uint8_t header[80];
-            uint32_t nFacets = (uint32_t) facets.size();
+              uint8_t header[80];
+              uint32_t nFacets = (uint32_t) facets.size();
 
-            in.read((char*)&header, sizeof(header));
-            in.read((char*)&nFacets, sizeof(nFacets));
+              in.read((char*)&header, sizeof(header));
+              in.read((char*)&nFacets, sizeof(nFacets));
 
-            for(unsigned int i = 0; i < nFacets; ++i) {
-              Point<T> pTmp;
-              size_t idA, idB, idC;
+              for(unsigned int i = 0; i < nFacets; ++i) {
+                Point<T> pTmp;
+                size_t idA, idB, idC;
 
-              float tmpPoint[3];
+                float tmpPoint[3];
 
-              //first point is normale, which is unused
-              in.read((char*)&tmpPoint, sizeof(tmpPoint));
-
-              //now read the remaining 3 points
-              for(unsigned int j = 0; j < 3; ++j) {
+                //first point is normale, which is unused
                 in.read((char*)&tmpPoint, sizeof(tmpPoint));
-                pTmp.x = (T)tmpPoint[0];
-                pTmp.y = (T)tmpPoint[1];
-                pTmp.z = (T)tmpPoint[2];
 
-                this->points.push_back(pTmp);
+                //now read the remaining 3 points
+                for(unsigned int j = 0; j < 3; ++j) {
+                  in.read((char*)&tmpPoint, sizeof(tmpPoint));
+                  pTmp.x = (T)tmpPoint[0];
+                  pTmp.y = (T)tmpPoint[1];
+                  pTmp.z = (T)tmpPoint[2];
+
+                  this->points.push_back(pTmp);
+                }
+
+                idA = this->points.size() - 3;
+                idB = this->points.size() - 2;
+                idC = this->points.size() - 1;
+
+                Facet facet(idA, idB, idC);
+
+                facets.push_back(facet);
               }
 
-              idA = this->points.size() - 3;
-              idB = this->points.size() - 2;
-              idC = this->points.size() - 1;
+              in.close();
+          }
+          else {
+              bool
+                  inFacet(false),
+                  inLoop(false);
 
-              Facet facet(idA, idB, idC);
+              std::string
+                  line,
+                  identifier,
+                  garbage,
+                  name("");
 
-              facets.push_back(facet);
-            }
+              std::ifstream in(path.c_str());
 
-            in.close();
+              size_t numberTmpPoints(0);
+
+              Point<T> pA, pB, pC;
+
+              while(std::getline(in,line)) {
+                  std::stringstream ssLine(line);
+
+                  ssLine >> identifier;
+
+                  if(identifier == "solid") {
+                      std::getline(ssLine, name);
+                  }
+
+                  else if(identifier == "facet") {
+                      inFacet = true;
+                      ssLine >> garbage; //to drop "normal" from "facet normal"
+                      ///@todo later add facet information here
+                  }
+
+                  else if(identifier == "outer") {
+                      if(inFacet)
+                          inLoop = true;
+                  }
+
+                  else if(identifier == "vertex") {
+                      if(inLoop) {
+                          T a, b, c;
+
+                          ssLine >> a;
+                          ssLine >> b;
+                          ssLine >> c;
+
+                          switch (numberTmpPoints) {
+                              case 0:
+                                  pA = Point<T>(a, b, c);
+                                  break;
+                              case 1:
+                                  pB = Point<T>(a, b, c);
+                                  break;
+                              case 2:
+                                  pC = Point<T>(a, b, c);
+                                  break;
+                          }
+                          ++numberTmpPoints;
+                      }
+                  }
+
+                  else if(identifier == "endloop") {
+                      size_t idA, idB, idC;
+
+                      this->points.push_back(pA);
+                      idA = this->points.size() - 1;
+
+                      this->points.push_back(pB);
+                      idB = this->points.size() - 1;
+
+                      this->points.push_back(pC);
+                      idC = this->points.size() - 1;
+
+                      Facet facet(idA, idB, idC);
+
+                      facets.push_back(facet);
+
+                      numberTmpPoints = 0;
+                      inLoop = false;
+                  }
+
+                  else if(identifier == "endfacet") {
+                      inFacet = false;
+                  }
+
+                  else if(identifier == "endsolid") {
+                      //currently doing nothing
+                  }
+              }
+          }
+
+          return true;
         }
-        else {
-            bool
-                inFacet(false),
-                inLoop(false);
-
-            std::string
-                line,
-                identifier,
-                garbage,
-                name("");
-
-            std::ifstream in(path.c_str());
-
-            size_t numberTmpPoints(0);
-
-            Point<T> pA, pB, pC;
-
-            while(std::getline(in,line)) {
-                std::stringstream ssLine(line);
-
-                ssLine >> identifier;
-
-                if(identifier == "solid") {
-                    std::getline(ssLine, name);
-                }
-
-                else if(identifier == "facet") {
-                    inFacet = true;
-                    ssLine >> garbage; //to drop "normal" from "facet normal"
-                    ///@todo later add facet information here
-                }
-
-                else if(identifier == "outer") {
-                    if(inFacet)
-                        inLoop = true;
-                }
-
-                else if(identifier == "vertex") {
-                    if(inLoop) {
-                        T a, b, c;
-
-                        ssLine >> a;
-                        ssLine >> b;
-                        ssLine >> c;
-
-                        switch (numberTmpPoints) {
-                            case 0:
-                                pA = Point<T>(a, b, c);
-                                break;
-                            case 1:
-                                pB = Point<T>(a, b, c);
-                                break;
-                            case 2:
-                                pC = Point<T>(a, b, c);
-                                break;
-                        }
-                        ++numberTmpPoints;
-                    }
-                }
-
-                else if(identifier == "endloop") {
-                    size_t idA, idB, idC;
-
-                    this->points.push_back(pA);
-                    idA = this->points.size() - 1;
-
-                    this->points.push_back(pB);
-                    idB = this->points.size() - 1;
-
-                    this->points.push_back(pC);
-                    idC = this->points.size() - 1;
-
-                    Facet facet(idA, idB, idC);
-
-                    facets.push_back(facet);
-
-                    numberTmpPoints = 0;
-                    inLoop = false;
-                }
-
-                else if(identifier == "endfacet") {
-                    inFacet = false;
-                }
-
-                else if(identifier == "endsolid") {
-                    //currently doing nothing
-                }
-            }
+        ///@todo specify error types
+        catch(...) {
+          facets.clear();
+          this->points.clear();
+          return false;
         }
-
-        return true;
+        return false;
     }
 
     bool save_stl(std::string path, bool binary = false, std::string name = "generated with lib_3d") {
@@ -229,10 +233,13 @@ public:
 
             //header has to be of size UINT8[80]
             //so leave this string at 79 characters (\0 char at end of it makes it size 80)
-            uint8_t header[] = "lib_3d binary format                                                          a";
+            uint8_t header[] = "lib_3d binary format                                                           ";
             uint32_t nFacets = (uint32_t) facets.size();
 
             std::ofstream out(path.c_str(), std::ofstream::binary);
+            if(!out)
+              return false;
+
             out.write((char*)&header, sizeof(header));
             out.write((char*)&nFacets, sizeof(nFacets));
 
@@ -268,7 +275,11 @@ public:
         }
         else {
           const int PRECISION(6);
+          
           std::ofstream out(path.c_str());
+          if(!out)
+            return false;
+
           out << std::setprecision(PRECISION) << std::showpoint << std::fixed;
 
           out << "solid " << name << std::endl;
