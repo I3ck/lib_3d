@@ -119,6 +119,28 @@ public:
 
 //------------------------------------------------------------------------------
 
+    static Matrix<T> look_at(const Vec<T> &target, const Vec<T> &up) {
+      Vec<T> N = target;
+      N.normalize();
+
+      Vec<T> U = up;
+      U.normalize();
+
+      U = U.cross(target);
+
+      Vec<T> V = N.cross(U);
+
+      Matrix<T> out;
+      out.m[0][0] = U.x;  out.m[0][1] = U.y;  out.m[0][2] = U.z;  out.m[0][3] = 0.0f;
+      out.m[1][0] = V.x;  out.m[1][1] = V.y;  out.m[1][2] = V.z;  out.m[1][3] = 0.0f;
+      out.m[2][0] = N.x;  out.m[2][1] = N.y;  out.m[2][2] = N.z;  out.m[2][3] = 0.0f;
+      out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0f;      
+
+      return out;
+    }
+
+//------------------------------------------------------------------------------
+
 };
 
 } // namespace lib_3d
