@@ -319,6 +319,12 @@ public:
             out.points.push_back( point * m ); ///@todo use "add or proper method once implemented"
         return out;
     }
+
+    inline PointCloud<POINTTYPE> operator *= (const Matrix<T> &m) {
+        for(auto& point : points)
+            point *= m;
+        return *this;
+    }
 };
 
 } // namespace lib_3d
