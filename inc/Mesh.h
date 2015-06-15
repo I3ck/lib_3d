@@ -67,8 +67,19 @@ public:
             ids.push_back(i.b);
             ids.push_back(i.c);
         }
-
         return ids;
+    }
+
+    std::vector<unsigned int> get_ids_uint() const {
+        std::vector<unsigned int> ids;
+
+        for(const auto& i : facets) {
+            ids.push_back((unsigned int)i.a);
+            ids.push_back((unsigned int)i.b);
+            ids.push_back((unsigned int)i.c);
+        }
+        return ids;
+
     }
 
 //------------------------------------------------------------------------------

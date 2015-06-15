@@ -54,6 +54,16 @@ public:
         return points;
     }
 
+    std::vector<T> get_coordinates() const {
+      std::vector<T> out;
+      for(const auto& point : points) {
+        out.push_back(point.x);
+        out.push_back(point.y);
+        out.push_back(point.z);
+      }
+      return out;
+    }
+
 //------------------------------------------------------------------------------
 
     size_t number_points() const {
