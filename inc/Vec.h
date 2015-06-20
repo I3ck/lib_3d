@@ -66,6 +66,21 @@ public:
 
 //------------------------------------------------------------------------------
 
+    ///@todo maybe move these two methods to PointVec
+    inline Vec<T> operator + (const Vec<T> &other) const {
+        Vec<T> out;
+        for(size_t i = 0; i < 4; ++i)
+          out[i] = (*this)[i] + other[i];
+        return out;
+    }
+
+    inline Vec<T>& operator += (const Vec<T> &other) {
+        for(size_t i = 0; i < 4; ++i)
+          (*this)[i] += other[i];
+        return *this;
+    }
+
+
     inline Vec<T> operator * (const Matrix<T> &m) const {
         Vec<T> out;
         for(size_t i = 0; i < 4; ++i) {
