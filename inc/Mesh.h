@@ -59,6 +59,32 @@ public:
         return facets;
     }
 
+    std::vector< Vec <T> > get_normals() {
+      Point<T> *pA, *pB, *pC;
+      std::vector< Vec<T> > normals;
+
+      normals.resize(this->points.size());
+
+      for(size_t i = 0; i < facets.size(); ++i) {
+        Facet facet = facets[i];
+        pA = &(this->points[facet.a]);
+        pB = &(this->points[facet.b]);
+        pC = &(this->points[facet.c]);
+
+        Vec<T> vAb = *pA - *pB;
+        Vec<T> vBc = *pB - *pC;
+        Vec<T> normale = vAb.cross(vBc).normalize();
+
+        normals[i] += normale;
+      }
+
+      for(auto &normale : normals) {
+        normale.normalize();
+      }
+
+      return normals;
+    }
+
     std::vector<size_t> get_ids() const {
         std::vector<size_t> ids;
 
@@ -79,7 +105,6 @@ public:
             ids.push_back((unsigned int)i.c);
         }
         return ids;
-
     }
 
 //------------------------------------------------------------------------------

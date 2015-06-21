@@ -670,6 +670,22 @@ TEST_CASE("testing mesh") {
 
         REQUIRE(mesh.get_ids().size() == 36);
     }
+
+    SECTION("getting normals") {
+        Mesh< Point<T> > mesh;
+        mesh.load_stl("tests/stlAscii.stl");
+
+        std::vector< Vec<T> > normals = mesh.get_normals();
+        std::vector< Point<T> > points = mesh.get_points();
+
+        REQUIRE(normals.size() == points.size());
+
+        for(auto normale : normals) {
+            REQUIRE(normale.length() == 1.0);
+        }
+        REQUIRE(false); //has to be checked visually
+
+    }
 }
 
 ///@todo test Quaternion
