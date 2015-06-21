@@ -10,6 +10,7 @@
 #define MATRIX_FACTORY_H_INCLUDED
 
 #include "constants.h"
+#include "PointVec.h"
 #include "Matrix.h"
 
 namespace lib_3d {
@@ -51,6 +52,10 @@ public:
         return out;
     }
 
+    static Matrix<T> translation(PointVec<T> data) {
+        return translation(data.x, data.y, data.z);
+    }
+
 //------------------------------------------------------------------------------
 
     static Matrix<T> scaling(T x, T y, T z) {
@@ -62,15 +67,12 @@ public:
         return out;
     }
 
-//------------------------------------------------------------------------------
+    static Matrix<T> scaling(PointVec<T> data) {
+        return scaling(data.x, data.y, data.z);
+    }
 
     static Matrix<T> scaling(T scale) {
-        Matrix<T> out;
-        out.m[0][0] = scale;  out.m[0][1] = 0.0;    out.m[0][2] = 0.0;    out.m[0][3] = 0.0;
-        out.m[1][0] = 0.0;    out.m[1][1] = scale;  out.m[1][2] = 0.0;    out.m[1][3] = 0.0;
-        out.m[2][0] = 0.0;    out.m[2][1] = 0.0;    out.m[2][2] = scale;  out.m[2][3] = 0.0;
-        out.m[3][0] = 0.0;    out.m[3][1] = 0.0;    out.m[3][2] = 0.0;    out.m[3][3] = 1.0;
-        return out;
+        return scaling(scale, scale, scale);
     }
 
 //------------------------------------------------------------------------------
@@ -99,6 +101,10 @@ public:
         rotZ.m[3][0] = 0.0;     rotZ.m[3][1] = 0.0;      rotZ.m[3][2] = 0.0;      rotZ.m[3][3] = 1.0;
 
         return rotX * rotY * rotZ;
+    }
+
+    static Matrix<T> rotation(PointVec<T> data) {
+        return rotation(data.x, data.y, data.z);
     }
 
 //------------------------------------------------------------------------------
@@ -134,7 +140,7 @@ public:
       out.m[0][0] = U.x;  out.m[0][1] = U.y;  out.m[0][2] = U.z;  out.m[0][3] = 0.0f;
       out.m[1][0] = V.x;  out.m[1][1] = V.y;  out.m[1][2] = V.z;  out.m[1][3] = 0.0f;
       out.m[2][0] = N.x;  out.m[2][1] = N.y;  out.m[2][2] = N.z;  out.m[2][3] = 0.0f;
-      out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0f;      
+      out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0f;
 
       return out;
     }
