@@ -33,9 +33,16 @@ public:
     Vec<T>& normalize() {
         const T length = this->length();
 
-        this->x /= length;
-        this->y /= length;
-        this->z /= length;
+        if(length == 0.0) { ///@todo maybe throw exception instead
+          this->x = 0.0;
+          this->y = 0.0;
+          this->z = 1.0;
+        }
+        else {
+          this->x /= length;
+          this->y /= length;
+          this->z /= length;
+        }
 
         return *this;
     }
