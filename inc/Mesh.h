@@ -152,27 +152,6 @@ public:
               }
 
               in.close();
-
-              ///@todo below can be done in general
-              ///@todo reserve
-              std::set<POINTTYPE> uniquePoints; ///@todo unordered set faster?
-
-              std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
-              vertexIterators.reserve(dupedPoints.size());
-              for (auto const& p : dupedPoints) ///@todo could be move iterator
-                vertexIterators.push_back(uniquePoints.insert(p).first);
-
-              std::vector<size_t> vertexIds;
-              vertexIds.reserve(vertexIterators.size());
-              for (auto const& iter : vertexIterators)
-                vertexIds.push_back(std::distance(uniquePoints.begin(), iter));
-
-              for (size_t i = 0; i < vertexIds.size(); i += 3) ///@todo correct break condition?
-                facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
-
-              this->points.insert(this->points.end(), std::make_move_iterator(uniquePoints.begin()), std::make_move_iterator(uniquePoints.end())); 
-
-              ///@todo also implement for ascii version once optimised and correct
           }
           else {
               bool
@@ -235,20 +214,9 @@ public:
                   }
 
                   else if(identifier == "endloop") {
-                      size_t idA, idB, idC;
-
-                      this->points.push_back(pA);
-                      idA = this->points.size() - 1;
-
-                      this->points.push_back(pB);
-                      idB = this->points.size() - 1;
-
-                      this->points.push_back(pC);
-                      idC = this->points.size() - 1;
-
-                      Facet facet(idA, idB, idC);
-
-                      facets.push_back(facet);
+                      dupedPoints.push_back(pA);
+                      dupedPoints.push_back(pB);
+                      dupedPoints.push_back(pC);
 
                       numberTmpPoints = 0;
                       inLoop = false;
@@ -263,6 +231,23 @@ public:
                   }
               }
           }
+
+          std::set<POINTTYPE> uniquePoints; ///@todo unordered set faster?
+
+          std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
+          vertexIterators.reserve(dupedPoints.size());
+          for (auto const& p : dupedPoints) ///@todo could be move iterator
+            vertexIterators.push_back(uniquePoints.insert(p).first);
+
+          std::vector<size_t> vertexIds;
+          vertexIds.reserve(vertexIterators.size());
+          for (auto const& iter : vertexIterators)
+            vertexIds.push_back(std::distance(uniquePoints.begin(), iter));
+
+          for (size_t i = 0; i < vertexIds.size(); i += 3) ///@todo correct break condition?
+            facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
+
+          this->points.insert(this->points.end(), std::make_move_iterator(uniquePoints.begin()), std::make_move_iterator(uniquePoints.end())); 
 
           return true;
         }
