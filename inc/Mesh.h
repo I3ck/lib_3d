@@ -132,8 +132,6 @@ public:
 
               for(unsigned int i = 0; i < nFacets; ++i) {
                 Point<T> pTmp;
-                size_t idA, idB, idC;
-
                 float tmpPoint[3];
 
                 //first point is normale, which is unused
@@ -149,13 +147,6 @@ public:
                   dupedPoints.push_back(std::move(pTmp));
                 }
 
-                idA = this->points.size() - 3;
-                idB = this->points.size() - 2;
-                idC = this->points.size() - 1;
-
-                //Facet facet(idA, idB, idC);
-                //facets.push_back(facet);
-
                 //read the 0 char
                 in.read((char*)&attributes, sizeof(attributes));
               }
@@ -165,28 +156,23 @@ public:
               ///@todo below can be done in general
               ///@todo reserve
               std::set<POINTTYPE> uniquePoints; ///@todo unordered set faster?
-              std::vector<size_t> vertexIds;
-              std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
-              for (size_t i = 0; i < dupedPoints.size(); ++i) ///@todo could be foreach and move iterator
-              {
-                auto res = uniquePoints.insert(dupedPoints[i]);
-                vertexIterators.push_back(res.first);
-              }
 
+              std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
+              vertexIterators.reserve(dupedPoints.size());
+              for (auto const& p : dupedPoints) ///@todo could be move iterator
+                vertexIterators.push_back(uniquePoints.insert(p).first);
+
+              std::vector<size_t> vertexIds;
+              vertexIds.reserve(vertexIterators.size());
               for (auto const& iter : vertexIterators)
                 vertexIds.push_back(std::distance(uniquePoints.begin(), iter));
 
               for (size_t i = 0; i < vertexIds.size(); i += 3) ///@todo correct break condition?
                 facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
 
-              this->points.clear(); ///@todo should already be done in the beginning, one of them can be removed then
               this->points.insert(this->points.end(), std::make_move_iterator(uniquePoints.begin()), std::make_move_iterator(uniquePoints.end())); 
 
-              ///@todo this version is now bugged, since some faces seem to be missing
-              ///@todo might actually be correct, but the rendering bugged
               ///@todo also implement for ascii version once optimised and correct
-
-
           }
           else {
               bool
