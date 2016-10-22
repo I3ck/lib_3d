@@ -166,13 +166,15 @@ public:
               ///@todo reserve
               std::set<POINTTYPE> uniquePoints; ///@todo unordered set faster?
               std::vector<size_t> vertexIds;
-              //std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
+              std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
               for (size_t i = 0; i < dupedPoints.size(); ++i) ///@todo could be foreach and move iterator
               {
                 auto res = uniquePoints.insert(dupedPoints[i]);
-                vertexIds.push_back(std::distance(uniquePoints.cbegin(), res.first));
-
+                vertexIterators.push_back(res.first);
               }
+
+              for (auto const& iter : vertexIterators)
+                vertexIds.push_back(std::distance(uniquePoints.begin(), iter));
 
               for (size_t i = 0; i < vertexIds.size(); i += 3) ///@todo correct break condition?
                 facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
