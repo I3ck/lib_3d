@@ -243,19 +243,21 @@ public:
               }
           }
 
-          std::set<POINTTYPE> uniquePoints; ///@todo unordered set faster?
-
-          std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
-          vertexIterators.reserve(dupedPoints.size());
-          for (auto& p : dupedPoints)
-            vertexIterators.push_back(uniquePoints.insert(std::move(p)).first);
-
+          std::vector<POINTTYPE> uniquePoints;
           std::vector<size_t> vertexIds;
-          vertexIds.reserve(vertexIterators.size());
-          for (auto const& iter : vertexIterators)
-            vertexIds.push_back(std::distance(uniquePoints.begin(), iter));
 
-          for (size_t i = 0; i < vertexIds.size(); i += 3) ///@todo correct break condition?
+          for (auto& p : dupedPoints)
+          {
+            auto index = std::find(uniquePoints.begin(), uniquePoints.end(), p) - uniquePoints.begin();
+            if (index >= uniquePoints.size())
+            {
+                uniquePoints.push_back(std::move(p));
+                index = uniquePoints.size() - 1;
+            }
+            vertexIds.push_back(index);
+          }
+
+          for (size_t i = 0; i < vertexIds.size(); i += 3)
             facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
 
           this->points.insert(this->points.end(), std::make_move_iterator(uniquePoints.begin()), std::make_move_iterator(uniquePoints.end())); 
