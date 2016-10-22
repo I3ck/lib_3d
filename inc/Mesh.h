@@ -124,34 +124,45 @@ public:
 
 
               uint8_t header[80];
-              uint32_t nFacets = (uint32_t) facets.size();
+              uint32_t nFacets;
               uint16_t attributes;
 
               in.read((char*)&header, sizeof(header));
               in.read((char*)&nFacets, sizeof(nFacets));
 
-              for(unsigned int i = 0; i < nFacets; ++i) {
-                Point<T> pTmp;
-                float tmpPoint[3];
+#pragma pack(push, 1)
+              struct Data
+              {
+              public:
+                  float
+                    normalX,
+                    normalY,
+                    normalZ,
+                    pos1X,
+                    pos1Y,
+                    pos1Z,
+                    pos2X,
+                    pos2Y,
+                    pos2Z,
+                    pos3X,
+                    pos3Y,
+                    pos3Z;
+                  uint16_t attributes;
+              };
+#pragma pack(pop)
 
-                //first point is normale, which is unused
-                in.read((char*)&tmpPoint, sizeof(tmpPoint));
-
-                //now read the remaining 3 points
-                for(unsigned int j = 0; j < 3; ++j) {
-                  in.read((char*)&tmpPoint, sizeof(tmpPoint));
-                  pTmp.x = (T)tmpPoint[0];
-                  pTmp.y = (T)tmpPoint[1];
-                  pTmp.z = (T)tmpPoint[2];
-
-                  dupedPoints.push_back(std::move(pTmp));
-                }
-
-                //read the 0 char
-                in.read((char*)&attributes, sizeof(attributes));
-              }
-
+              auto datas = std::vector<Data>();
+              datas.resize(nFacets);
+              in.read((char*)datas.data(), datas.size() * sizeof(Data));
               in.close();
+
+              dupedPoints.reserve(3*datas.size());
+              for (auto const& data : datas)
+              {
+                  dupedPoints.emplace_back(data.pos1X, data.pos1Y, data.pos1Z);
+                  dupedPoints.emplace_back(data.pos2X, data.pos2Y, data.pos2Z);
+                  dupedPoints.emplace_back(data.pos3X, data.pos3Y, data.pos3Z);
+              }
           }
           else {
               bool
@@ -236,8 +247,8 @@ public:
 
           std::vector<typename::decltype(uniquePoints)::iterator> vertexIterators;
           vertexIterators.reserve(dupedPoints.size());
-          for (auto const& p : dupedPoints) ///@todo could be move iterator
-            vertexIterators.push_back(uniquePoints.insert(p).first);
+          for (auto& p : dupedPoints)
+            vertexIterators.push_back(uniquePoints.insert(std::move(p)).first);
 
           std::vector<size_t> vertexIds;
           vertexIds.reserve(vertexIterators.size());
