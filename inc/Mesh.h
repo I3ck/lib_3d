@@ -244,7 +244,9 @@ public:
           }
 
           std::vector<POINTTYPE> uniquePoints;
+          uniquePoints.reserve(dupedPoints.size() / 3);
           std::vector<size_t> vertexIds;
+          vertexIds.reserve(dupedPoints.size());
 
           for (auto& p : dupedPoints)
           {
@@ -258,7 +260,7 @@ public:
           }
 
           for (size_t i = 0; i < vertexIds.size(); i += 3)
-            facets.push_back(Facet (vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]));
+            facets.emplace_back(vertexIds[i+0], vertexIds[i+1], vertexIds[i+2]);
 
           this->points.insert(this->points.end(), std::make_move_iterator(uniquePoints.begin()), std::make_move_iterator(uniquePoints.end())); 
 
