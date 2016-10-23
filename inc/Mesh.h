@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <iomanip>
 #include <set>
+#include <map>
 
 namespace lib_3d {
 
@@ -242,21 +243,28 @@ public:
                   }
               }
           }
+          
+          std::map<POINTTYPE, std::vector<size_t>> indexedPointMap;
+          size_t index(0);
+          for (auto& p : dupedPoints) ///@todo normal iteration   ///@todo move
+          {
+              indexedPointMap[p].push_back(index);
+              ++index;
+          }
 
           std::vector<POINTTYPE> uniquePoints;
-          uniquePoints.reserve(dupedPoints.size() / 3);
+          uniquePoints.reserve(indexedPointMap.size());
           std::vector<size_t> vertexIds;
-          vertexIds.reserve(dupedPoints.size());
+          vertexIds.resize(dupedPoints.size());
 
-          for (auto& p : dupedPoints)
+          size_t counter(0);
+          for (auto& indexedPoint : indexedPointMap) ///@todo move ///@todo normal iteration
           {
-            auto index = std::find(uniquePoints.begin(), uniquePoints.end(), p) - uniquePoints.begin();
-            if (index >= uniquePoints.size())
-            {
-                uniquePoints.push_back(std::move(p));
-                index = uniquePoints.size() - 1;
-            }
-            vertexIds.push_back(index);
+              uniquePoints.push_back(indexedPoint.first);
+              for (auto& i : indexedPoint.second)
+                  vertexIds[i] = counter;
+
+              ++counter;
           }
 
           for (size_t i = 0; i < vertexIds.size(); i += 3)
