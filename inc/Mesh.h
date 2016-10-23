@@ -253,14 +253,11 @@ public:
           std::vector<size_t> vertexIds;
           vertexIds.resize(dupedPoints.size());
 
-          size_t counter(0);
           for (auto const& indexedPoint : indexedPointMap)
           {
               uniquePoints.push_back(indexedPoint.first);
               for (auto i : indexedPoint.second)
-                  vertexIds[i] = counter;
-
-              ++counter;
+                  vertexIds[i] = uniquePoints.size()-1;
           }
 
           for (size_t i = 0; i < vertexIds.size(); i += 3)
