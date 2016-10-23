@@ -12,6 +12,8 @@
 #include "PointVec.h"
 #include "Vec.h"
 
+#include <functional>
+
 namespace lib_3d {
 
 template <typename T>
@@ -76,6 +78,17 @@ public:
     }
 
 };
+
+///@todo seperate file?
+template <typename T>
+struct PointHasher
+{
+  std::size_t operator()(const Point<T>& p) const
+  {
+    return std::hash<T>()((T)(3.0 * p.x + 7.0 * p.y + 11.0 * p.z));
+  }
+};
+
 
 } // namespace lib_3d
 

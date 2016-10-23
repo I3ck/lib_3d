@@ -18,8 +18,7 @@
 #include <fstream>
 #include <cstdint>
 #include <iomanip>
-#include <set>
-#include <map>
+#include <unordered_map>
 
 namespace lib_3d {
 
@@ -244,7 +243,7 @@ public:
               }
           }
           
-          std::map<POINTTYPE, std::vector<size_t>> indexedPointMap;
+          std::unordered_map<POINTTYPE, std::vector<size_t>, PointHasher<T>> indexedPointMap;
           size_t index(0);
           for (auto& p : dupedPoints) ///@todo normal iteration   ///@todo move
           {
