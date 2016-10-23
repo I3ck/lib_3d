@@ -244,23 +244,20 @@ public:
           }
           
           std::unordered_map<POINTTYPE, std::vector<size_t>, PointHasher<T>> indexedPointMap;
-          size_t index(0);
-          for (auto& p : dupedPoints) ///@todo normal iteration   ///@todo move
-          {
-              indexedPointMap[p].push_back(index);
-              ++index;
-          }
+          for (size_t i = 0; i < dupedPoints.size(); ++i)
+              indexedPointMap[std::move(dupedPoints[i])].push_back(i);
 
           std::vector<POINTTYPE> uniquePoints;
           uniquePoints.reserve(indexedPointMap.size());
+
           std::vector<size_t> vertexIds;
           vertexIds.resize(dupedPoints.size());
 
           size_t counter(0);
-          for (auto& indexedPoint : indexedPointMap) ///@todo move ///@todo normal iteration
+          for (auto const& indexedPoint : indexedPointMap)
           {
               uniquePoints.push_back(indexedPoint.first);
-              for (auto& i : indexedPoint.second)
+              for (auto i : indexedPoint.second)
                   vertexIds[i] = counter;
 
               ++counter;
