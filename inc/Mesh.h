@@ -28,6 +28,7 @@ class Mesh : public PointCloud<POINTTYPE>{
 private:
     typedef typename POINTTYPE::value_type T;
     std::vector<Facet> facets;
+    std::vector< Vec<T> > faceNormals; ///@todo might be better to store normals per vertex
 
 public:
 
@@ -40,6 +41,7 @@ public:
         PointCloud<POINTTYPE>(nPoints)
     {
         facets.reserve(3 * nPoints); ///@todo 3 times nPoints is worst case, dose this make sense?
+        faceNormals.reserve(3* nPoints); ///@todo same as above
     }
 
 //------------------------------------------------------------------------------
@@ -60,11 +62,15 @@ public:
         return facets;
     }
 
-    std::vector< Vec <T> > get_normals() {
-      Point<T> *pA, *pB, *pC;
-      std::vector< Vec<T> > normals;
+    ///@todo this method and likely others can be highly optimized
+    std::vector< Vec<T> > get_normals() { ///@todo return reference or copy? ///@todo could offer other method which updates normals, so this one could always be defined const
+        if(faceNormals.size() == facets.size()) ///@todo needs further checks, writing actions would have to set a changed flag
+            return faceNormals;
 
-      normals.resize(this->points.size());
+      Point<T> *pA, *pB, *pC;
+
+      faceNormals.clear();
+      faceNormals.reserve(facets.size());
 
       for(size_t i = 0; i < facets.size(); ++i) {
         Facet facet = facets[i];
@@ -72,18 +78,13 @@ public:
         pB = &(this->points[facet.b]);
         pC = &(this->points[facet.c]);
 
-        Vec<T> vAb = *pA - *pB;
-        Vec<T> vBc = *pB - *pC;
-        Vec<T> normale = vAb.cross(vBc).normalize();
+        const Vec<T> vAb = *pA - *pB;
+        const Vec<T> vBc = *pB - *pC;
 
-        normals[i] += normale;
+        faceNormals.push_back(vAb.cross(vBc).normalize());
       }
 
-      for(auto &normale : normals) {
-        normale.normalize();
-      }
-
-      return normals;
+      return faceNormals; ///@todo might make sense to add overloads for these
     }
 
     std::vector<size_t> get_ids() const {
@@ -109,9 +110,10 @@ public:
     }
 
 //------------------------------------------------------------------------------
-
-    bool load_stl(std::string path, bool binary = false) { ///@todo loading with wrong flag => endless loop
+    ///@todo normal load especially for ascii case untested
+    bool load_stl(std::string path, bool binary = false) { ///@todo loading with wrong flag => endless loop ///@todo automatically figure out whether binary or ascii
         facets.clear();
+        faceNormals.clear();
         this->points.clear();
 
         std::vector<POINTTYPE> dupedPoints;
@@ -162,6 +164,8 @@ public:
                   dupedPoints.emplace_back(data.pos1X, data.pos1Y, data.pos1Z);
                   dupedPoints.emplace_back(data.pos2X, data.pos2Y, data.pos2Z);
                   dupedPoints.emplace_back(data.pos3X, data.pos3Y, data.pos3Z);
+
+                  faceNormals.emplace_back(data.normalX, data.normalY, data.normalZ);
               }
           }
           else {
@@ -190,10 +194,15 @@ public:
                       std::getline(ssLine, name);
                   }
 
-                  else if(identifier == "facet") {
+                  else if(identifier == "facet") { ///@todo must be tested
                       inFacet = true;
                       ssLine >> garbage; //to drop "normal" from "facet normal"
-                      ///@todo later add facet information here
+                      T a, b, c;
+                      ssLine >> a;
+                      ssLine >> b;
+                      ssLine >> c;
+
+                      faceNormals.emplace_back(a, b, c);
                   }
 
                   else if(identifier == "outer") {
