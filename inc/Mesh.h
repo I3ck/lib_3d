@@ -63,14 +63,16 @@ public:
     }
 
     ///@todo this method and likely others can be highly optimized
-    std::vector< Vec<T> > get_normals() { ///@todo return reference or copy? ///@todo could offer other method which updates normals, so this one could always be defined const
-        if(faceNormals.size() == facets.size()) ///@todo needs further checks, writing actions would have to set a changed flag
-            return faceNormals;
+    ///@todo rename?
+    std::vector<T> get_normals() { ///@todo return reference or copy? ///@todo could offer other method which updates normals, so this one could always be defined const
+       // if(false && faceNormals.size() == facets.size()) ///@todo needs further checks, writing actions would have to set a changed flag
+       //     return faceNormals;
+        ///@TODO remove false above, just for testing
 
       Point<T> *pA, *pB, *pC;
 
       faceNormals.clear();
-      faceNormals.reserve(facets.size());
+      faceNormals.resize(this->points.size());
 
       for(size_t i = 0; i < facets.size(); ++i) {
         Facet facet = facets[i];
@@ -80,11 +82,27 @@ public:
 
         const Vec<T> vAb = *pA - *pB;
         const Vec<T> vBc = *pB - *pC;
+        const auto normal = vAb.cross(vBc).normalize();
 
-        faceNormals.push_back(vAb.cross(vBc).normalize());
+        ///@todo far from perfect, should be average of all normals or similar, since this will now simply overwrite
+        /// @TODO entire method now returns normals of vertices instead of faces, therefore has to be renamed
+        faceNormals[facet.a] = normal;
+        faceNormals[facet.b] = normal;
+        faceNormals[facet.c] = normal;
       }
 
-      return faceNormals; ///@todo might make sense to add overloads for these
+      std::vector<T> result;
+      result.reserve(3*faceNormals.size());
+      for (auto& normal : faceNormals)
+      {
+          result.push_back(normal.x);
+          result.push_back(normal.y);
+          result.push_back(normal.z);
+      }
+
+      return result;
+
+//      return faceNormals; ///@todo might make sense to add overloads for these
     }
 
     std::vector<size_t> get_ids() const {
