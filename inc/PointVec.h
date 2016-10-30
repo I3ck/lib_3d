@@ -40,6 +40,30 @@ public:
 
 //------------------------------------------------------------------------------
 
+    T get_x() const
+    {
+        return x;
+    }
+
+    T get_y() const
+    {
+        return y;
+    }
+
+    T get_z() const
+    {
+        return z;
+    }
+
+    T get_w() const
+    {
+        return w;
+    }
+
+
+//------------------------------------------------------------------------------
+
+
     PointVec& move_by(T x, T y, T z) {
         this->x+=x;
         this->y+=y;
