@@ -91,6 +91,15 @@ public:
 
 
 //------------------------------------------------------------------------------
+    ///@todo dot
+    PointVec cross(PointVec const& other)
+    {
+        return PointVec( this->y * other.z - this->z * other.y
+                       , this->z * other.x - this->x * other.z
+                       , this->x * other.y - this->y * other.x);
+    }
+
+//------------------------------------------------------------------------------
 
     ///@todo use matrix for rotation
 
@@ -115,11 +124,12 @@ public:
 
 //------------------------------------------------------------------------------
 
-    void normalize() {
+    PointVec& normalize() {
         auto l = abs();
         x /= l;
         y /= l;
         z /= l;
+        return *this;
     }
 
 //------------------------------------------------------------------------------
