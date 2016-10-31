@@ -59,13 +59,13 @@ public:
         return *this;
     }
 
-    inline Point<T> operator + (const Vec<T> &vec) const {
+    inline Point<T> operator + (const PointVec<T> &vec) const {
         return Point<T>{this->x + vec.x,
                         this->y + vec.y,
                         this->z + vec.z};
     }
 
-    inline Point<T>& operator += (const Vec<T> &vec) {
+    inline Point<T>& operator += (const PointVec<T> &vec) {
         *this = *this + vec;
         return *this;
     }

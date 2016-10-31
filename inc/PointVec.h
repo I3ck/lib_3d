@@ -174,6 +174,14 @@ public:
                (x == other.x && y == other.y && z < other.z);
     }
 
+    PointVec operator - () const  {
+        auto result = *this;
+        result.x *= -1.0;
+        result.y *= -1.0;
+        result.z *= -1.0;
+        return result;
+    }
+
     friend std::ostream &operator << (std::ostream &os, PointVec point) {
         os << point.to_string();
         return os;
