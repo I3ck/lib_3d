@@ -45,10 +45,18 @@ public:
 
 //------------------------------------------------------------------------------
 
-    inline Vec<T> operator - (const Point<T> &other) const {
+    inline Vec<T> operator - (const PointVec<T> &other) const {
         return Vec<T>{this->x - other.x,
                       this->y - other.y,
                       this->z - other.z};
+    }
+
+    inline Point<T>& operator -= (const PointVec<T> &other) {
+        auto v = *this - other;
+        this->x = v.x;
+        this->y = v.y;
+        this->z = v.z;
+        return *this;
     }
 
     inline Point<T> operator + (const Vec<T> &vec) const {

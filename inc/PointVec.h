@@ -115,6 +115,15 @@ public:
 
 //------------------------------------------------------------------------------
 
+    void normalize() {
+        auto l = abs();
+        x /= l;
+        y /= l;
+        z /= l;
+    }
+
+//------------------------------------------------------------------------------
+
     T distance_to(PointVec other) const {
         return sqrt(  pow(x-other.x,2) + pow(y-other.y,2) + pow(z-other.z,2)  );
     }

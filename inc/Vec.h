@@ -98,7 +98,7 @@ public:
         return out;
     }
 
-    inline Vec<T>& operator * (const Matrix<T> &m) {
+    inline Vec<T>& operator *= (const Matrix<T> &m) {
         *this = *this * m;
         return *this;
     }
