@@ -22,34 +22,34 @@ public:
 //------------------------------------------------------------------------------
 
     static Matrix<T> zeroes() {
-        Matrix<T> out;
-        out.m[0][0] = 0.0;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0; out.m[0][3] = 0.0;
-        out.m[1][0] = 0.0;  out.m[1][1] = 0.0;  out.m[1][2] = 0.0; out.m[1][3] = 0.0;
-        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] = 0.0; out.m[2][3] = 0.0;
-        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0; out.m[3][3] = 0.0;
-        return out;
+        return Matrix<T>(
+            {{ {0.0, 0.0, 0.0, 0.0}
+             , {0.0, 0.0, 0.0, 0.0}
+             , {0.0, 0.0, 0.0, 0.0}
+             , {0.0, 0.0, 0.0, 0.0}
+            }});
     }
 
 //------------------------------------------------------------------------------
 
     static Matrix<T> unity() {
-        Matrix<T> out;
-        out.m[0][0] = 1.0;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0; out.m[0][3] = 0.0;
-        out.m[1][0] = 0.0;  out.m[1][1] = 1.0;  out.m[1][2] = 0.0; out.m[1][3] = 0.0;
-        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] = 1.0; out.m[2][3] = 0.0;
-        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0; out.m[3][3] = 1.0;
-        return out;
+        return Matrix<T>(
+            {{ {1.0, 0.0, 0.0, 0.0}
+             , {0.0, 1.0, 0.0, 0.0}
+             , {0.0, 0.0, 1.0, 0.0}
+             , {0.0, 0.0, 0.0, 1.0}
+            }});
     }
 
 //------------------------------------------------------------------------------
 
     static Matrix<T> translation(T x, T y, T z) {
-        Matrix<T> out;
-        out.m[0][0] = 1.0;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0; out.m[0][3] = x;
-        out.m[1][0] = 0.0;  out.m[1][1] = 1.0;  out.m[1][2] = 0.0; out.m[1][3] = y;
-        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] = 1.0; out.m[2][3] = z;
-        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0; out.m[3][3] = 1.0;
-        return out;
+        return Matrix<T>(
+            {{ {1.0, 0.0, 0.0, x  }
+             , {0.0, 1.0, 0.0, y  }
+             , {0.0, 0.0, 1.0, z  }
+             , {0.0, 0.0, 0.0, 1.0}
+            }});
     }
 
     static Matrix<T> translation(PointVec<T> data) {
@@ -59,12 +59,12 @@ public:
 //------------------------------------------------------------------------------
 
     static Matrix<T> scaling(T x, T y, T z) {
-        Matrix<T> out;
-        out.m[0][0] = x  ;  out.m[0][1] = 0.0;  out.m[0][2] = 0.0;  out.m[0][3] = 0.0;
-        out.m[1][0] = 0.0;  out.m[1][1] =   y;  out.m[1][2] = 0.0;  out.m[1][3] = 0.0;
-        out.m[2][0] = 0.0;  out.m[2][1] = 0.0;  out.m[2][2] =   z;  out.m[2][3] = 0.0;
-        out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0;
-        return out;
+        return Matrix<T>(
+            {{ {x,   0.0, 0.0, 0.0}
+             , {0.0, y,   0.0, 0.0}
+             , {0.0, 0.0, z,   0.0}
+             , {0.0, 0.0, 0.0, 1.0}
+            }});
     }
 
     static Matrix<T> scaling(PointVec<T> data) {
@@ -82,23 +82,26 @@ public:
         T y = LIB_3D_DEG_TO_RAD * degY;
         T z = LIB_3D_DEG_TO_RAD * degZ;
 
-        Matrix<T>
-            rotX, rotY, rotZ;
+        auto rotX = Matrix<T>(
+            {{ {1.0, 0.0,    0.0,     0.0}
+             , {0.0, cos(x), -sin(x), 0.0}
+             , {0.0, sin(x),  cos(x), 0.0}
+             , {0.0, 0.0,    0.0,     1.0}
+            }});
 
-        rotX.m[0][0] = 1.0;     rotX.m[0][1] = 0.0;      rotX.m[0][2] = 0.0;      rotX.m[0][3] = 0.0;
-        rotX.m[1][0] = 0.0;     rotX.m[1][1] = cos(x);   rotX.m[1][2] = -sin(x);  rotX.m[1][3] = 0.0;
-        rotX.m[2][0] = 0.0;     rotX.m[2][1] = sin(x);   rotX.m[2][2] = cos(x);   rotX.m[2][3] = 0.0;
-        rotX.m[3][0] = 0.0;     rotX.m[3][1] = 0.0;      rotX.m[3][2] = 0.0;      rotX.m[3][3] = 1.0;
+        auto rotY = Matrix<T>(
+            {{ { cos(y), 0.0, sin(y), 0.0}
+             , {0.0,     1.0, 0.0,    0.0}
+             , {-sin(y), 0.0, cos(y), 0.0}
+             , {0.0,     0.0, 0.0,    1.0}
+            }});
 
-        rotY.m[0][0] = cos(y);  rotY.m[0][1] = 0.0;      rotY.m[0][2] = sin(y);   rotY.m[0][3] = 0.0;
-        rotY.m[1][0] = 0.0;     rotY.m[1][1] = 1.0;      rotY.m[1][2] = 0.0;      rotY.m[1][3] = 0.0;
-        rotY.m[2][0] = -sin(y); rotY.m[2][1] = 0.0;      rotY.m[2][2] = cos(y);   rotY.m[2][3] = 0.0;
-        rotY.m[3][0] = 0.0;     rotY.m[3][1] = 0.0;      rotY.m[3][2] = 0.0;      rotY.m[3][3] = 1.0;
-
-        rotZ.m[0][0] = cos(z);  rotZ.m[0][1] = -sin(z);  rotZ.m[0][2] = 0.0;      rotZ.m[0][3] = 0.0;
-        rotZ.m[1][0] = sin(z);  rotZ.m[1][1] = cos(z);   rotZ.m[1][2] = 0.0;      rotZ.m[1][3] = 0.0;
-        rotZ.m[2][0] = 0.0;     rotZ.m[2][1] = 0.0;      rotZ.m[2][2] = 1.0;      rotZ.m[2][3] = 0.0;
-        rotZ.m[3][0] = 0.0;     rotZ.m[3][1] = 0.0;      rotZ.m[3][2] = 0.0;      rotZ.m[3][3] = 1.0;
+        auto rotZ = Matrix<T>(
+            {{ {cos(z), -sin(z), 0.0, 0.0}
+             , {sin(z),  cos(z), 0.0, 0.0}
+             , {0.0,    0.0,     1.0, 0.0}
+             , {0.0,    0.0,     0.0, 1.0}
+            }});
 
         return rotX * rotY * rotZ;
     }
@@ -110,12 +113,12 @@ public:
     static Matrix<T> rotation(T deg, PointVec<T> const& u) {
         const auto x = LIB_3D_DEG_TO_RAD * deg;
 
-        Matrix<T> out;
-        out.m[0][0] = cos(x) + u.x*u.x*(1.0 - cos(x));     out.m[0][1] = u.x*u.y*(1.0 - cos(x)) - u.z*sin(x); out.m[0][2] = u.x*u.z*(1.0 - cos(x)) + u.y*sin(x); out.m[0][3] = 0.0;
-        out.m[1][0] = u.y*u.x*(1.0 - cos(x)) + u.z*sin(x); out.m[1][1] = cos(x) + u.y*u.y*(1.0 - cos(x));     out.m[1][2] = u.y*u.z*(1.0 - cos(x)) - u.x*sin(x); out.m[1][3] = 0.0;
-        out.m[2][0] = u.z*u.x*(1.0 - cos(x)) - u.y*sin(x); out.m[2][1] = u.z*u.y*(1.0 - cos(x)) + u.x*sin(x); out.m[2][2] = cos(x) + u.z*u.z*(1.0 - cos(x));     out.m[2][3] = 0.0;
-        out.m[3][0] = 0.0;                                 out.m[3][1] = 0.0;                                 out.m[3][2] = 0.0;                                 out.m[3][3] = 1.0;
-        return out;
+        return Matrix<T>(
+            {{ {cos(x) + u.x*u.x*(1.0 - cos(x)),     u.x*u.y*(1.0 - cos(x)) - u.z*sin(x), u.x*u.z*(1.0 - cos(x)) + u.y*sin(x), 0.0}
+             , {u.y*u.x*(1.0 - cos(x)) + u.z*sin(x), cos(x) + u.y*u.y*(1.0 - cos(x)),     u.y*u.z*(1.0 - cos(x)) - u.x*sin(x), 0.0}
+             , {u.z*u.x*(1.0 - cos(x)) - u.y*sin(x), u.z*u.y*(1.0 - cos(x)) + u.x*sin(x), cos(x) + u.z*u.z*(1.0 - cos(x)),     0.0}
+             , {0.0,                                 0.0,                                 0.0,                                 1.0}
+            }});
     }
 
 //------------------------------------------------------------------------------
@@ -125,34 +128,33 @@ public:
         T range = close-away;
         T tanFovHalf = tan(fov/2.0);
 
-        Matrix<T> out;
-        out.m[0][0] = 1.0 / (tanFovHalf * away);  out.m[0][1] = 0.0;               out.m[0][2] = 0.0;                      out.m[0][3] = 0.0;
-        out.m[1][0] = 0.0;                        out.m[1][1] = 1.0 / tanFovHalf;  out.m[1][2] = 0.0;                      out.m[1][3] = 0.0;
-        out.m[2][0] = 0.0;                        out.m[2][1] = 0.0;               out.m[2][2] = (-close - away) / range;  out.m[2][3] = 2.0 * away * close / range;
-        out.m[3][0] = 0.0;                        out.m[3][1] = 0.0;               out.m[3][2] = 1.0;                      out.m[3][3] = 1.0;
-        return out;
+        return Matrix<T>(
+            {{ {1.0 / (tanFovHalf * away), 0.0,              0.0,                     0.0}
+             , {0.0,                       1.0 / tanFovHalf, 0.0,                     0.0}
+             , {0.0,                       0.0,              (-close - away) / range, 2.0 * away * close / range}
+             , {0.0,                       0.0,              1.0,                     1.0}
+            }});
     }
 
 //------------------------------------------------------------------------------
 
     static Matrix<T> look_at(const Vec<T> &target, const Vec<T> &up) {
-      Vec<T> N = target;
-      N.normalize();
+        Vec<T> N = target;
+        N.normalize();
 
-      Vec<T> U = up;
-      U.normalize();
+        Vec<T> U = up;
+        U.normalize();
 
-      U = U.cross(target);
+        U = U.cross(target);
 
-      Vec<T> V = N.cross(U);
+        Vec<T> V = N.cross(U);
 
-      Matrix<T> out;
-      out.m[0][0] = U.x;  out.m[0][1] = U.y;  out.m[0][2] = U.z;  out.m[0][3] = 0.0f;
-      out.m[1][0] = V.x;  out.m[1][1] = V.y;  out.m[1][2] = V.z;  out.m[1][3] = 0.0f;
-      out.m[2][0] = N.x;  out.m[2][1] = N.y;  out.m[2][2] = N.z;  out.m[2][3] = 0.0f;
-      out.m[3][0] = 0.0;  out.m[3][1] = 0.0;  out.m[3][2] = 0.0;  out.m[3][3] = 1.0f;
-
-      return out;
+        return Matrix<T>(
+            {{ {U.x, U.y, U.z, 0.0}
+             , {V.x, V.y, V.z, 0.0}
+             , {N.x, N.y, N.z, 0.0}
+             , {0.0, 0.0, 0.0, 1.0}
+            }});
     }
 
 //------------------------------------------------------------------------------
