@@ -174,6 +174,14 @@ public:
                (x == other.x && y == other.y && z < other.z);
     }
 
+    PointVec operator * (T x) const {
+        auto result = *this;
+        result.x *= x;
+        result.y *= y;
+        result.z *= z;
+        return result;
+    }
+
     PointVec operator - () const  {
         auto result = *this;
         result.x *= -1.0;
@@ -213,6 +221,14 @@ public:
         }
     }
 };
+
+template<typename T>
+PointVec<T> operator * (T x, PointVec<T> p) {
+    p.x *= x;
+    p.y *= x;
+    p.z *= x;
+    return p;
+}
 
 } // namespace lib_3d
 

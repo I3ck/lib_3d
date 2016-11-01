@@ -67,6 +67,10 @@ public:
         add_rotation(data.x, data.y, data.z);
     }
 
+    void add_rotation(T deg, PointVec<T> const& u) {
+        matrixRotation = MatrixFactory<T>::rotation(deg, u);
+    }
+
     void remove_rotation() {
         matrixRotation = MatrixFactory<T>::unity();
     }

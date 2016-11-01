@@ -107,6 +107,17 @@ public:
         return rotation(data.x, data.y, data.z);
     }
 
+    static Matrix<T> rotation(T deg, PointVec<T> const& u) {
+        const auto x = LIB_3D_DEG_TO_RAD * deg;
+
+        Matrix<T> out;
+        out.m[0][0] = cos(x) + u.x*u.x*(1.0 - cos(x));     out.m[0][1] = u.x*u.y*(1.0 - cos(x)) - u.z*sin(x); out.m[0][2] = u.x*u.z*(1.0 - cos(x)) + u.y*sin(x); out.m[0][3] = 0.0;
+        out.m[1][0] = u.y*u.x*(1.0 - cos(x)) + u.z*sin(x); out.m[1][1] = cos(x) + u.y*u.y*(1.0 - cos(x));     out.m[1][2] = u.y*u.z*(1.0 - cos(x)) - u.x*sin(x); out.m[1][3] = 0.0;
+        out.m[2][0] = u.z*u.x*(1.0 - cos(x)) - u.y*sin(x); out.m[2][1] = u.z*u.y*(1.0 - cos(x)) + u.x*sin(x); out.m[2][2] = cos(x) + u.z*u.z*(1.0 - cos(x));     out.m[2][3] = 0.0;
+        out.m[3][0] = 0.0;                                 out.m[3][1] = 0.0;                                 out.m[3][2] = 0.0;                                 out.m[3][3] = 1.0;
+        return out;
+    }
+
 //------------------------------------------------------------------------------
 
     static Matrix<T> perspective(T width, T height, T close, T away, T fovDeg) {

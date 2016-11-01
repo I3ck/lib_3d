@@ -26,8 +26,11 @@ public:
 
     Point(T x=0.0, T y=0.0, T z=0.0) :
         PointVec<T>(x, y, z)
-    {
-    }
+    {}
+
+    Point(PointVec<T> const& in) :
+        PointVec<T>(in.x, in.y, in.z)
+    {}
 
 //------------------------------------------------------------------------------
 
