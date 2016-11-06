@@ -33,6 +33,12 @@ public:
          }}
     {}
 
+    Matrix(Matrix const&) = default;
+    Matrix(Matrix &&) = default;
+    Matrix& operator = (Matrix const&) = default;
+    Matrix& operator = (Matrix &&) = default;
+    ~Matrix() = default;
+
     Matrix(matrix const& in) :
         m(in)
     {}
@@ -40,12 +46,6 @@ public:
     Matrix(matrix && in) :
         m(std::move(in))
     {}
-
-//------------------------------------------------------------------------------
-
-    ~Matrix() {
-
-    }
 
 //------------------------------------------------------------------------------
 
