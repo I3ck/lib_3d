@@ -10,7 +10,7 @@
 #define MATRIX_FACTORY_H_INCLUDED
 
 #include "constants.h"
-#include "PointVec.h"
+#include "Vec.h"
 #include "Matrix.h"
 
 namespace lib_3d {
@@ -52,7 +52,7 @@ public:
             }});
     }
 
-    static Matrix<T> translation(PointVec<T> data) {
+    static Matrix<T> translation(Vec<T> data) {
         return translation(data.x, data.y, data.z);
     }
 
@@ -67,7 +67,7 @@ public:
             }});
     }
 
-    static Matrix<T> scaling(PointVec<T> data) {
+    static Matrix<T> scaling(Vec<T> data) {
         return scaling(data.x, data.y, data.z);
     }
 
@@ -106,11 +106,11 @@ public:
         return rotX * rotY * rotZ;
     }
 
-    static Matrix<T> rotation(PointVec<T> data) {
+    static Matrix<T> rotation(Vec<T> data) {
         return rotation(data.x, data.y, data.z);
     }
 
-    static Matrix<T> rotation(T deg, PointVec<T> const& u) {
+    static Matrix<T> rotation(T deg, Vec<T> const& u) {
         const auto x = LIB_3D_DEG_TO_RAD * deg;
 
         return Matrix<T>(

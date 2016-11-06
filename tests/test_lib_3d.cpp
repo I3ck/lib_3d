@@ -25,8 +25,10 @@ T
     z(0.3),
     MAX_DELTA(0.00001);
 
+///@todo some tests might be incorrectly named now or duped since change from PointVec and Point to Vec
+
 TEST_CASE("testing point") {
-    Point<T> p{x, y, z};
+    Vec<T> p{x, y, z};
 
     SECTION("testing initialisation") {
         REQUIRE(p.x == x);
@@ -61,7 +63,7 @@ TEST_CASE("testing point") {
     }
 
     SECTION("testing equality checks") {
-        Point<T> p2 = p;
+        Vec<T> p2 = p;
         REQUIRE(p2 == p);
         REQUIRE(p2.equal_to(p));
 
@@ -84,18 +86,18 @@ TEST_CASE("testing point") {
     }
 
     SECTION("testing center calculation") {
-        Point <T> center{}, centerShould{};
+        Vec <T> center{}, centerShould{};
 
-        p = Point<T>{1,1,0.0};
-        Point<T> p2 = Point<T> {1,2,0.0};
-        centerShould = Point <T> {1, 1.5, 0.0};
+        p = Vec<T>{1,1,0.0};
+        Vec<T> p2 = Vec<T> {1,2,0.0};
+        centerShould = Vec <T> {1, 1.5, 0.0};
         center = p.center_between(p2);
 
         REQUIRE(center.similar_to(centerShould, MAX_DELTA));
     }
 
     SECTION("testing operator overloads") {
-        Point<T>
+        Vec<T>
             p2{1.0, 2.0, 3.0},
             p3,
             p4;
@@ -254,15 +256,15 @@ TEST_CASE("testing Matrix factories") {
     ///@todo rotation (rather complicated)
 }
 
-TEST_CASE("Matrix*Point") {
+TEST_CASE("Matrix*Vec") {
 
-    SECTION("Translate point with Matrix") {
-        Point<T> p{1.0, 2.0, 3.0};
+    SECTION("Translate Vec with Matrix") {
+        Vec<T> p{1.0, 2.0, 3.0};
         Matrix<T> m = MatrixFactory<T>::translation(1.0, 0.1, 0.3);
 
-        Point<T> p2 = p * m;
+        Vec<T> p2 = p * m;
 
-        Point<T> p3{2.0, 2.1, 3.3};
+        Vec<T> p3{2.0, 2.1, 3.3};
 
         REQUIRE(p2.similar_to(p3, MAX_DELTA));
 
@@ -271,39 +273,39 @@ TEST_CASE("Matrix*Point") {
         REQUIRE(p.similar_to(p2, MAX_DELTA));
     }
 
-    SECTION("Rotate point with Matrix") {
-        Point<T> p{1.0, 0.0, 0.0};
+    SECTION("Rotate Vec with Matrix") {
+        Vec<T> p{1.0, 0.0, 0.0};
 
         Matrix<T> mRotX = MatrixFactory<T>::rotation(90.0, 0.0, 0.0);
         Matrix<T> mRotY = MatrixFactory<T>::rotation(0.0, 90.0, 0.0);
         Matrix<T> mRotZ = MatrixFactory<T>::rotation(0.0, 0.0, 90.0);
 
         p = p * mRotZ;
-        REQUIRE(p.similar_to(Point<T>{0.0, 1.0, 0.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{0.0, 1.0, 0.0}, MAX_DELTA));
 
         p = p * mRotZ;
-        REQUIRE(p.similar_to(Point<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
 
         p = p * mRotZ;
-        REQUIRE(p.similar_to(Point<T>{0.0, -1.0, 0.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{0.0, -1.0, 0.0}, MAX_DELTA));
 
         p = p * mRotX;
-        REQUIRE(p.similar_to(Point<T>{0.0, 0.0, -1.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{0.0, 0.0, -1.0}, MAX_DELTA));
 
         p = p * mRotY;
-        REQUIRE(p.similar_to(Point<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{-1.0, 0.0, 0.0}, MAX_DELTA));
     }
 
-    SECTION("Scaling a point with Matrix") {
-        Point<T> p{1.0, 2.0, 3.0};
+    SECTION("Scaling a Vec with Matrix") {
+        Vec<T> p{1.0, 2.0, 3.0};
 
         Matrix<T> mScale = MatrixFactory<T>::scaling(2.0, 3.0, 4.0);
 
         p = p * mScale;
-        REQUIRE(p.similar_to(Point<T>{2.0, 6.0, 12.0}, MAX_DELTA));
+        REQUIRE(p.similar_to(Vec<T>{2.0, 6.0, 12.0}, MAX_DELTA));
     }
 
-    SECTION("Using perspective on a point") {
+    SECTION("Using perspective on a Vec") {
         ///@todo need some proper compare results
         ///@todo not yet implemented
         Matrix<T> mPers = MatrixFactory<T>::perspective(300.0, 300.0, 1.0, 100.0, 90.0);
@@ -324,11 +326,11 @@ TEST_CASE("Testing Vec") {
     SECTION("Retrieving length") {
         Vec<T> vec{0.0, 0.0, 0.0};
 
-        REQUIRE(vec.length() == 0.0);
+        REQUIRE(vec.abs() == 0.0);
 
         Vec<T> vec2{1.0, 0.0, 0.0};
 
-        REQUIRE(vec2.length() == 1.0);
+        REQUIRE(vec2.abs() == 1.0);
     }
 
     SECTION("Cross product") {
@@ -346,9 +348,9 @@ TEST_CASE("Testing Vec") {
         REQUIRE(vec1.dot(vec2) == 3.0);
     }
 
-    SECTION("Vec between points") {
-        Point<T> p1{0.0, 0.0, 0.0};
-        Point<T> p2{1.0, 1.1, 1.2};
+    SECTION("Vec between Vecs") {
+        Vec<T> p1{0.0, 0.0, 0.0};
+        Vec<T> p2{1.0, 1.1, 1.2};
 
         Vec<T> vec1{-1.0, -1.1, -1.2};
         Vec<T> vec2 = p1 - p2;
@@ -356,9 +358,9 @@ TEST_CASE("Testing Vec") {
         REQUIRE(vec1 == vec2);
     }
 
-    SECTION("adding vector to point") {
-        Point<T> p1{0.0, 0.0, 0.0};
-        Point<T> p2{1.0, 1.1, 1.2};
+    SECTION("adding vector to Vec") {
+        Vec<T> p1{0.0, 0.0, 0.0};
+        Vec<T> p2{1.0, 1.1, 1.2};
 
         Vec<T> vec1{1.0, 1.1, 1.2};
 
@@ -368,13 +370,13 @@ TEST_CASE("Testing Vec") {
 
 TEST_CASE("PointCloud") {
     SECTION("Constructors") {
-        vector< Point<T> > points = { {0.0, 1.0, 1.2}, {2.0, 2.1, 2.2} };
+        vector< Vec<T> > points = { {0.0, 1.0, 1.2}, {2.0, 2.1, 2.2} };
 
-        PointCloud< Point<T> > pointCloud;
+        PointCloud< Vec<T> > pointCloud;
 
         REQUIRE(pointCloud.size() == 0);
 
-        PointCloud< Point<T> > pointCloud2(points.begin(), points.end());
+        PointCloud< Vec<T> > pointCloud2(points.begin(), points.end());
 
         REQUIRE(pointCloud2.size() == 2);
     }
@@ -389,13 +391,13 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("filling and emptying and size") {
-        Point<T> p1, p2, p3, p4;
-        PointCloud< Point<T> > pointCloud1, pointCloud2;
+        Vec<T> p1, p2, p3, p4;
+        PointCloud< Vec<T> > pointCloud1, pointCloud2;
 
         pointCloud1.push_back(p1);
         pointCloud1.push_back(0.0, 0.0, 0.0);
         pointCloud1.emplace_back(0.0, 0.0, 0.0);
-        pointCloud1.emplace_back(Point<T>{0.0, 0.0, 0.0});
+        pointCloud1.emplace_back(Vec<T>{0.0, 0.0, 0.0});
         pointCloud1 += p2;
 
         REQUIRE(pointCloud1.size() == 5);
@@ -412,14 +414,14 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("Length") {
-        Point<T>
+        Vec<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
             p3{2.0, 0.0, 0.0},
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud< Point<T> > pointCloud;
+        PointCloud< Vec<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -430,14 +432,14 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("first, last, clear and reverse") {
-        Point<T>
+        Vec<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
             p3{2.0, 0.0, 0.0},
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud< Point<T> > pointCloud;
+        PointCloud< Vec<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -458,7 +460,7 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("center") {
-        Point<T>
+        Vec<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
             p3{2.0, 0.0, 0.0},
@@ -466,7 +468,7 @@ TEST_CASE("PointCloud") {
             p5{4.0, 0.0, 0.0},
             centerShould{2.0, 0.0, 0.0};
 
-        PointCloud< Point<T> > pointCloud;
+        PointCloud< Vec<T> > pointCloud;
         pointCloud += p1;
         pointCloud += p2;
         pointCloud += p3;
@@ -477,21 +479,21 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("similarity and equality") {
-        Point<T>
+        Vec<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
             p3{2.0, 0.0, 0.0},
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud< Point<T> > pointCloud1;
+        PointCloud< Vec<T> > pointCloud1;
         pointCloud1 += p1;
         pointCloud1 += p2;
         pointCloud1 += p3;
         pointCloud1 += p4;
         pointCloud1 += p5;
 
-        PointCloud< Point<T> > pointCloud2 = pointCloud1;
+        PointCloud< Vec<T> > pointCloud2 = pointCloud1;
 
         REQUIRE(pointCloud1.equal_to(pointCloud2));
         REQUIRE(pointCloud1 == pointCloud2);
@@ -517,21 +519,21 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("range") {
-        Point<T>
+        Vec<T>
             p1{0.0, 0.0, 0.0},
             p2{1.0, 0.0, 0.0},
             p3{2.0, 0.0, 0.0},
             p4{3.0, 0.0, 0.0},
             p5{4.0, 0.0, 0.0};
 
-        PointCloud< Point<T> > pointCloud1;
+        PointCloud< Vec<T> > pointCloud1;
         pointCloud1 += p1;
         pointCloud1 += p2;
         pointCloud1 += p3;
         pointCloud1 += p4;
         pointCloud1 += p5;
 
-        PointCloud< Point<T> > pointCloud2;
+        PointCloud< Vec<T> > pointCloud2;
         pointCloud2 += p2;
         pointCloud2 += p3;
 
@@ -542,14 +544,14 @@ TEST_CASE("PointCloud") {
     }
 
     SECTION("iterating and random access") {
-        vector< Point<T> > points;
-        points.push_back(Point<T>{0.0, 0.0, 0.0});
-        points.push_back(Point<T>{1.0, 0.0, 0.0});
-        points.push_back(Point<T>{2.0, 0.0, 0.0});
-        points.push_back(Point<T>{3.0, 0.0, 0.0});
-        points.push_back(Point<T>{4.0, 0.0, 0.0});
+        vector< Vec<T> > points;
+        points.push_back(Vec<T>{0.0, 0.0, 0.0});
+        points.push_back(Vec<T>{1.0, 0.0, 0.0});
+        points.push_back(Vec<T>{2.0, 0.0, 0.0});
+        points.push_back(Vec<T>{3.0, 0.0, 0.0});
+        points.push_back(Vec<T>{4.0, 0.0, 0.0});
 
-        PointCloud< Point<T> > pointCloud;
+        PointCloud< Vec<T> > pointCloud;
 
         for(auto i : points)
             pointCloud += i;
@@ -629,7 +631,7 @@ TEST_CASE("testing mesh") {
     }
 
     SECTION("loading and saving ascii") {
-        Mesh< Point<T> > mesh, mesh2;
+        Mesh< Vec<T> > mesh, mesh2;
         mesh.load_stl("tests/stlAscii.stl");
 
         REQUIRE(mesh.number_points() == 8);
@@ -645,7 +647,7 @@ TEST_CASE("testing mesh") {
     }
 
     SECTION("loading and saving binary") {
-        Mesh< Point<T> > mesh, mesh2;
+        Mesh< Vec<T> > mesh, mesh2;
         mesh.load_stl("tests/stlBinary.stl", true);
 
         REQUIRE(mesh.number_points() == 8);
@@ -661,7 +663,7 @@ TEST_CASE("testing mesh") {
     }
 
     SECTION("getting points and facets or ids") {
-        Mesh< Point<T> > mesh;
+        Mesh< Vec<T> > mesh;
         mesh.load_stl("tests/stlAscii.stl");
 
         REQUIRE(mesh.get_points().size() == 8);

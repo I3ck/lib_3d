@@ -10,8 +10,6 @@
 #define LIB_3D_H_INCLUDED
 
 #include "inc/constants.h"
-#include "inc/PointVec.h"
-#include "inc/Point.h"
 #include "inc/Vec.h"
 #include "inc/Facet.h"
 #include "inc/PointCloud.h"

@@ -9,7 +9,7 @@
 #ifndef POINTCLOUD_H_INCLUDED
 #define POINTCLOUD_H_INCLUDED
 
-#include "Point.h"
+#include "Vec.h"
 
 #include <vector>
 #include <fstream>
@@ -320,7 +320,7 @@ public:
         return points[i];
     }
 
-    operator std::vector < Point <T> > () const {
+    operator std::vector < Vec <T> > () const { ///@todo overload to return constref or even move
         return points;
     }
 

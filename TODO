@@ -36,3 +36,5 @@ Classes
     add equality checks to containers for easier unit testing
 
     add cache to matrix pipe
+
+not clear what to do with w component when operating on several vectors

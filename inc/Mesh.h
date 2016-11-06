@@ -9,7 +9,7 @@
 #ifndef MESH_H_INCLUDED
 #define MESH_H_INCLUDED
 
-#include "Point.h"
+#include "Vec.h"
 #include "Facet.h"
 #include "PointCloud.h"
 
@@ -69,7 +69,7 @@ public:
        //     return faceNormals;
         ///@TODO remove false above, just for testing
 
-      Point<T> *pA, *pB, *pC;
+      Vec<T> *pA, *pB, *pC;
 
       faceNormals.clear();
       faceNormals.resize(this->points.size());
@@ -201,7 +201,7 @@ public:
 
               size_t numberTmpPoints(0);
 
-              Point<T> pA, pB, pC;
+              Vec<T> pA, pB, pC;
 
               while(std::getline(in,line)) {
                   std::stringstream ssLine(line);
@@ -238,13 +238,13 @@ public:
 
                           switch (numberTmpPoints) {
                               case 0:
-                                  pA = Point<T>(a, b, c);
+                                  pA = Vec<T>(a, b, c);
                                   break;
                               case 1:
-                                  pB = Point<T>(a, b, c);
+                                  pB = Vec<T>(a, b, c);
                                   break;
                               case 2:
-                                  pC = Point<T>(a, b, c);
+                                  pC = Vec<T>(a, b, c);
                                   break;
                           }
                           ++numberTmpPoints;
@@ -270,7 +270,7 @@ public:
               }
           }
           
-          std::unordered_map<POINTTYPE, std::vector<size_t>, PointHasher<T>> indexedPointMap;
+          std::unordered_map<POINTTYPE, std::vector<size_t>, VecHasher<T>> indexedPointMap;
           for (size_t i = 0; i < dupedPoints.size(); ++i)
               indexedPointMap[std::move(dupedPoints[i])].push_back(i);
 
@@ -323,7 +323,7 @@ public:
             out.write((char*)&nFacets, sizeof(nFacets));
 
             for(auto facet : facets) {
-              Point<T> *pA, *pB, *pC;
+              Vec<T> *pA, *pB, *pC;
 
               pA = &(this->points[facet.a]);
               pB = &(this->points[facet.b]);
@@ -363,7 +363,7 @@ public:
 
           out << "solid " << name << std::endl;
           for(auto facet : facets) {
-            Point<T> *pA, *pB, *pC;
+            Vec<T> *pA, *pB, *pC;
 
             pA = &(this->points[facet.a]);
             pB = &(this->points[facet.b]);

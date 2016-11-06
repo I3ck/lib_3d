@@ -10,7 +10,7 @@
 #define MATRIX_PIPE_H_INCLUDED
 
 #include "constants.h"
-#include "PointVec.h"
+#include "Vec.h"
 #include "Matrix.h"
 #include "MatrixFactory.h"
 
@@ -49,7 +49,7 @@ public:
         matrixTranslation = MatrixFactory<T>::translation(x, y, z);
     }
 
-    void add_translation(PointVec<T> data) {
+    void add_translation(Vec<T> data) {
         add_translation(data.x, data.y, data.z);
     }
 
@@ -63,11 +63,11 @@ public:
         matrixRotation = MatrixFactory<T>::rotation(degX, degY, degZ);
     }
 
-    void add_rotation(PointVec<T> data) {
+    void add_rotation(Vec<T> data) {
         add_rotation(data.x, data.y, data.z);
     }
 
-    void add_rotation(T deg, PointVec<T> const& u) {
+    void add_rotation(T deg, Vec<T> const& u) {
         matrixRotation = MatrixFactory<T>::rotation(deg, u);
     }
 
@@ -81,7 +81,7 @@ public:
         matrixScale = MatrixFactory<T>::scaling(x, y, z);
     }
 
-    void add_scale(PointVec<T> data) {
+    void add_scale(Vec<T> data) {
        add_scale(data.x, data.y, data.z);
     }
 
@@ -109,7 +109,7 @@ public:
         matrixCameraTranslation = MatrixFactory<T>::translation(-x, -y, -z);
     }
 
-    void add_camera_translation(PointVec<T> data) {
+    void add_camera_translation(Vec<T> data) {
         add_camera_translation(data.x, data.y, data.z);
     }
 
