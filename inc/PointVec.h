@@ -177,8 +177,16 @@ public:
     PointVec operator * (T x) const {
         auto result = *this;
         result.x *= x;
-        result.y *= y;
-        result.z *= z;
+        result.y *= x;
+        result.z *= x;
+        return result;
+    }
+
+    PointVec operator / (T x) const {
+        auto result = *this;
+        result.x /= x;
+        result.y /= x;
+        result.z /= x;
         return result;
     }
 
@@ -227,6 +235,14 @@ PointVec<T> operator * (T x, PointVec<T> p) {
     p.x *= x;
     p.y *= x;
     p.z *= x;
+    return p;
+}
+
+template<typename T>
+PointVec<T> operator / (T x, PointVec<T> p) {
+    p.x /= x;
+    p.y /= x;
+    p.z /= x;
     return p;
 }
 

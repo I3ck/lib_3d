@@ -102,7 +102,40 @@ public:
         *this = *this * m;
         return *this;
     }
+
+    Vec operator * (T x) const { ///@todo so much duplicate code, maybe drop Vec and Point and only keep PointVec (maybe named Vec)
+        auto result = *this;
+        result.x *= x;
+        result.y *= x;
+        result.z *= x;
+        return result;
+    }
+
+    Vec operator / (T x) const { ///@todo so much duplicate code, maybe drop Vec and Point and only keep PointVec (maybe named Vec)
+        auto result = *this;
+        result.x /= x;
+        result.y /= x;
+        result.z /= x;
+        return result;
+    }
+
 };
+
+template<typename T>
+Vec<T> operator * (T x, Vec<T> p) {
+    p.x *= x;
+    p.y *= x;
+    p.z *= x;
+    return p;
+}
+
+template<typename T>
+Vec<T> operator / (T x, Vec<T> p) {
+    p.x /= x;
+    p.y /= x;
+    p.z /= x;
+    return p;
+}
 
 } // namespace lib_3d
 
