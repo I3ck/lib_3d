@@ -28,7 +28,7 @@ class Mesh : public PointCloud<POINTTYPE>{
 private:
     typedef typename POINTTYPE::value_type T;
     std::vector<Facet> facets;
-    std::vector< Vec<T> > faceNormals; ///@todo might be better to store normals per vertex
+    std::vector< Vec<T> > vertexNormals; ///@todo might be better to store normals per vertex
 
 public:
 
@@ -41,7 +41,7 @@ public:
         PointCloud<POINTTYPE>(nPoints)
     {
         facets.reserve(3 * nPoints); ///@todo 3 times nPoints is worst case, dose this make sense?
-        faceNormals.reserve(3* nPoints); ///@todo same as above
+        vertexNormals.reserve(3* nPoints); ///@todo same as above
     }
 
 //------------------------------------------------------------------------------
@@ -64,15 +64,12 @@ public:
 
     ///@todo this method and likely others can be highly optimized
     ///@todo rename?
+    ///@todo already calculate on creation? would allow this to be const
     std::vector<T> get_normals() { ///@todo return reference or copy? ///@todo could offer other method which updates normals, so this one could always be defined const
-       // if(false && faceNormals.size() == facets.size()) ///@todo needs further checks, writing actions would have to set a changed flag
-       //     return faceNormals;
-        ///@TODO remove false above, just for testing
+      const Vec<T> *pA, *pB, *pC;
 
-      Vec<T> *pA, *pB, *pC;
-
-      faceNormals.clear();
-      faceNormals.resize(this->points.size());
+      vertexNormals.clear();
+      vertexNormals.resize(this->points.size(), Vec<T>(0.0, 0.0, 0.0));
 
       for(size_t i = 0; i < facets.size(); ++i) {
         Facet facet = facets[i];
@@ -80,29 +77,27 @@ public:
         pB = &(this->points[facet.b]);
         pC = &(this->points[facet.c]);
 
-        const Vec<T> vAb = *pA - *pB;
-        const Vec<T> vBc = *pB - *pC;
+        ///@todo the normals here might be pointing in the wrong direction
+        const auto vAb = *pA - *pB;
+        const auto vBc = *pB - *pC;
         const auto normal = vAb.cross(vBc).normalize();
 
-        ///@todo far from perfect, should be average of all normals or similar, since this will now simply overwrite
-        /// @TODO entire method now returns normals of vertices instead of faces, therefore has to be renamed
-        faceNormals[facet.a] = normal;
-        faceNormals[facet.b] = normal;
-        faceNormals[facet.c] = normal;
+        vertexNormals[facet.a] += normal;
+        vertexNormals[facet.b] += normal;
+        vertexNormals[facet.c] += normal;
       }
 
       std::vector<T> result;
-      result.reserve(3*faceNormals.size());
-      for (auto& normal : faceNormals)
+      result.reserve(3*vertexNormals.size());
+      for (auto& normal : vertexNormals)
       {
+          normal.normalize();
           result.push_back(normal.x);
           result.push_back(normal.y);
           result.push_back(normal.z);
       }
 
-      return result;
-
-//      return faceNormals; ///@todo might make sense to add overloads for these
+      return result; ///@todo could be cached or a simple conversion method from faceNormals
     }
 
     std::vector<size_t> get_ids() const {
@@ -131,7 +126,7 @@ public:
     ///@todo normal load especially for ascii case untested
     bool load_stl(std::string path, bool binary = false) { ///@todo loading with wrong flag => endless loop ///@todo automatically figure out whether binary or ascii
         facets.clear();
-        faceNormals.clear();
+        vertexNormals.clear();
         this->points.clear();
 
         std::vector<POINTTYPE> dupedPoints;
@@ -183,7 +178,7 @@ public:
                   dupedPoints.emplace_back(data.pos2X, data.pos2Y, data.pos2Z);
                   dupedPoints.emplace_back(data.pos3X, data.pos3Y, data.pos3Z);
 
-                  faceNormals.emplace_back(data.normalX, data.normalY, data.normalZ);
+                  vertexNormals.emplace_back(data.normalX, data.normalY, data.normalZ);
               }
           }
           else {
@@ -220,7 +215,7 @@ public:
                       ssLine >> b;
                       ssLine >> c;
 
-                      faceNormals.emplace_back(a, b, c);
+                      vertexNormals.emplace_back(a, b, c);
                   }
 
                   else if(identifier == "outer") {
