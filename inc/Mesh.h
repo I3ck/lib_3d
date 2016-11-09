@@ -71,16 +71,14 @@ public:
       vertexNormals.clear();
       vertexNormals.resize(this->points.size(), Vec<T>(0.0, 0.0, 0.0));
 
-      for(size_t i = 0; i < facets.size(); ++i) {
-        Facet facet = facets[i];
+      for (auto const& facet : facets) {
         pA = &(this->points[facet.a]);
         pB = &(this->points[facet.b]);
         pC = &(this->points[facet.c]);
 
-        ///@todo the normals here might be pointing in the wrong direction
         const auto vAb = *pA - *pB;
-        const auto vBc = *pB - *pC;
-        const auto normal = vAb.cross(vBc).normalize();
+        const auto vAc = *pA - *pC;
+        const auto normal = vAb.cross(vAc).normalize();
 
         vertexNormals[facet.a] += normal;
         vertexNormals[facet.b] += normal;
