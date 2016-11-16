@@ -41,6 +41,14 @@ public:
         points.reserve(nPoints);
     }
 
+    PointCloud(std::vector<POINTTYPE> const& points) :
+        points(points)
+    {}
+
+    PointCloud(std::vector<POINTTYPE> && points) :
+        points(std::move(points))
+    {}
+
     template<class InputIterator>
     PointCloud(InputIterator first, InputIterator last) {
         while(first != last) {
