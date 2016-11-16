@@ -6,3 +6,5 @@
 *.tmp
 bin/
 obj/
+build/
+CMakeLists.txt.user

@@ -8,15 +8,7 @@
 using namespace std;
 using namespace lib_3d;
 
-#ifdef USE_DOUBLE
 using T = double;
-#elif USE_LDOUBLE
-using T = long double;
-#elif USE_FLOAT
-using T = float;
-#else
-using T = int;
-#endif
 
 
 T
