@@ -109,8 +109,13 @@ public:
 
 //------------------------------------------------------------------------------
 
-    PointCloud& push_back(POINTTYPE point) {
+    PointCloud& push_back(POINTTYPE const& point) {
         points.push_back(point);
+        return *this;
+    }
+
+    PointCloud& push_back(POINTTYPE && point) {
+        points.push_back(std::move(point));
         return *this;
     }
 
@@ -126,7 +131,7 @@ public:
     }
 
     PointCloud& emplace_back(T x, T y, T z) {
-        emplace_back(POINTTYPE{x, y, z});
+        points.emplace_back(x, y, z);
         return *this;
     }
 
