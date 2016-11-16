@@ -125,21 +125,11 @@ public:
         return *this;
     }
 
-    PointCloud& emplace_back(POINTTYPE point) {
-        points.emplace_back(point);
-        return *this;
-    }
-
     PointCloud& emplace_back(T x, T y, T z) {
         emplace_back(POINTTYPE{x, y, z});
         return *this;
     }
 
-    PointCloud& emplace_back(const PointCloud &other) {
-        for(auto i = other.cbegin(); i != other.cend(); ++i)
-            emplace_back(*i);
-        return *this;
-    }
 
 //------------------------------------------------------------------------------
 

@@ -388,8 +388,8 @@ TEST_CASE("PointCloud") {
 
         pointCloud1.push_back(p1);
         pointCloud1.push_back(0.0, 0.0, 0.0);
-        pointCloud1.emplace_back(0.0, 0.0, 0.0);
-        pointCloud1.emplace_back(Vec<T>{0.0, 0.0, 0.0});
+        pointCloud1.push_back(0.0, 0.0, 0.0);
+        pointCloud1.push_back(Vec<T>{0.0, 0.0, 0.0});
         pointCloud1 += p2;
 
         REQUIRE(pointCloud1.size() == 5);
